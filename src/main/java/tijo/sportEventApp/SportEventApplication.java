@@ -1,4 +1,4 @@
-package tijo.sportEvent;
+package tijo.sportEventApp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
