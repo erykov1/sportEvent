@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class ReportConfiguration {
   @Bean
-  ReportFacade reportFacade(ReportRepository reportRepository) {
-    return new ReportFacade(reportRepository);
+  ReportFacade reportFacade(ReportRepository reportRepository, SportEventAssignRepository sportEventAssignRepository) {
+    return new ReportFacade(reportRepository, sportEventAssignRepository);
   }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ReportFacade {
   ReportRepository reportRepository;
+  SportEventAssignRepository sportEventAssignRepository;
 
   @Autowired
   public ReportFacade(ReportRepository reportRepository) {
