@@ -9,4 +9,8 @@ class UserConfiguration {
   UserFacade userFacade(UserRepository userRepository) {
     return new UserFacade(userRepository);
   }
+
+  UserFacade userFacade() {
+    return new UserFacade(new InMemoryUserRepository());
+  }
 }
