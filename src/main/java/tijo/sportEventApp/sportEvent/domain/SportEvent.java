@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 import java.time.Instant;
 
 @Entity
-@Table(name = "sport_event")
+@Table(name = "sport_events")
 @Builder()
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class SportEvent {

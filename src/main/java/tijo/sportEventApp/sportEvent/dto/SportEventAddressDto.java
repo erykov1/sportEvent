@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-class SportEventAddressDto {
+public class SportEventAddressDto {
   Long eventAddressId;
   String postalCode;
   String city;

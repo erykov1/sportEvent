@@ -1,6 +1,6 @@
 package tijo.sportEventApp.user.dto;
 
-enum UserRoleDto {
+public enum UserRoleDto {
   ADMIN,
   USER
 }
