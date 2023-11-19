@@ -8,4 +8,5 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SportEventFacade {
   SportEventRepository sportEventRepository;
+  SportEventAddressRepository sportEventAddressRepository;
 }

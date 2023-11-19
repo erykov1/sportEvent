@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class SportEventConfiguration {
   @Bean
-  SportEventFacade sportEventFacade(SportEventRepository sportEventRepository) {
-    return new SportEventFacade(sportEventRepository);
+  SportEventFacade sportEventFacade(SportEventRepository sportEventRepository,
+                                    SportEventAddressRepository sportEventAddressRepository) {
+    return new SportEventFacade(sportEventRepository, sportEventAddressRepository);
   }
 }
