@@ -18,12 +18,13 @@ class Report {
   UUID reportId;
   String name;
   String surname;
-  String email;
   @Enumerated(EnumType.STRING)
   ReportStatus reportStatus;
   Instant reportedAt;
-  Instant statusUpdatedAt;
   Long eventId;
+  @ManyToOne
+  @JoinColumn(name = "sportEventId")
+  SportEventAssign sportEventAssign;
 
 
 

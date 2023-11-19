@@ -15,9 +15,7 @@ public class ReportDto {
   UUID reportId;
   String name;
   String surname;
-  String email;
   ReportStatusDto reportStatus;
   Instant reportedAt;
-  Instant statusUpdatedAt;
   Long eventId;
 }

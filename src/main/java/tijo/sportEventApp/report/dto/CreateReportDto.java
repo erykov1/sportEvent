@@ -13,6 +13,5 @@ import lombok.experimental.FieldDefaults;
 public class CreateReportDto {
   String name;
   String surname;
-  String email;
   Long eventId;
 }
