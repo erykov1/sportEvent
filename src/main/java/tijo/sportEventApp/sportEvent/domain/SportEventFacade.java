@@ -36,4 +36,8 @@ public class SportEventFacade {
   public List<SportEventDto> findAllSportEvents() {
     return new ArrayList<>();
   }
+
+  public void deleteSportEvent(Long sportEventId) {
+
+  }
 }
