@@ -22,10 +22,5 @@ class Report {
   ReportStatus reportStatus;
   Instant reportedAt;
   Long eventId;
-  @ManyToOne
-  @JoinColumn(name = "sportEventId")
-  SportEventAssign sportEventAssign;
-
-
-
+  Long sportEventId;
 }
