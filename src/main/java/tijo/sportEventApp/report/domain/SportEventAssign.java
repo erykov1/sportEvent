@@ -16,6 +16,7 @@ class SportEventAssign {
   Long sportEventId;
   Long maxParticipants;
   Instant registrationDeadline;
+  Instant eventTime;
   @OneToMany(mappedBy = "sportEventAssign", cascade = CascadeType.ALL, orphanRemoval = true)
   Set<Report> reports;
 }
