@@ -43,4 +43,11 @@ public class ReportFacade {
   public List<ReportDto> getAllReportsByStatus(ReportStatusDto reportStatus) {
     return new ArrayList<>();
   }
+
+  public void deleteReport(UUID reportId) {
+  }
+
+  public List<ReportDto> findAllReports() {
+    return new ArrayList<>();
+  }
 }
