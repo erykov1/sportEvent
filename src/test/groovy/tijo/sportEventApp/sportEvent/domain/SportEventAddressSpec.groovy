@@ -7,7 +7,7 @@ import tijo.sportEventApp.sportEvent.dto.SportEventAddressDto
 class SportEventAddressSpec extends SportEventBase implements SportEventAddressSample {
   def "Should create new event address"() {
     when: "creates new event address"
-      SportEventAddressDto result = sportEventFacade.createEventAddressDto(CreateSportEventAddressDto.builder()
+      SportEventAddressDto result = sportEventFacade.createEventAddress(CreateSportEventAddressDto.builder()
           .postalCode("30-100").city("Tarnow").street("Mickiewicza").streetNumber("34A").build()
       )
     then: "new event address is created"
@@ -18,11 +18,11 @@ class SportEventAddressSpec extends SportEventBase implements SportEventAddressS
 
   def "Should not create event address if it already exists"() {
     given: "there is event address"
-      SportEventAddressDto result = sportEventFacade.createEventAddressDto(CreateSportEventAddressDto.builder()
+      SportEventAddressDto result = sportEventFacade.createEventAddress(CreateSportEventAddressDto.builder()
           .postalCode("30-100").city("Tarnow").street("Mickiewicza").streetNumber("34A").build()
       )
     when: "creates the same event address"
-      sportEventFacade.createEventAddressDto(CreateSportEventAddressDto.builder()
+      sportEventFacade.createEventAddress(CreateSportEventAddressDto.builder()
           .postalCode("30-100").city("Tarnow").street("Mickiewicza").streetNumber("34A").build()
       )
     then: "there is only one event address"
@@ -33,8 +33,8 @@ class SportEventAddressSpec extends SportEventBase implements SportEventAddressS
 
   @Unroll
   def "Should create event address"() {
-    when: "creates event address with the same fields but another #DIFFERENT_FIELD"
-      SportEventAddressDto result = sportEventFacade.createEventAddressDto(CreateSportEventAddressDto.builder()
+    when: "creates event address with the same fields but with one different field"
+      SportEventAddressDto result = sportEventFacade.createEventAddress(CreateSportEventAddressDto.builder()
           .postalCode(POSTAL_CODE).city(CITY).street(STREET).streetNumber(STREET_NUMBER).build()
       )
     then: "event address is created"

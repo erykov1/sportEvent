@@ -21,7 +21,7 @@ public class SportEventFacade {
   SportEventAddressRepository sportEventAddressRepository;
   InstantProvider instantProvider;
 
-  public SportEventAddressDto createEventAddressDto(CreateSportEventAddressDto createSportEventAddressDto) {
+  public SportEventAddressDto createEventAddress(CreateSportEventAddressDto createSportEventAddressDto) {
     return SportEventAddressDto.builder().build();
   }
 
