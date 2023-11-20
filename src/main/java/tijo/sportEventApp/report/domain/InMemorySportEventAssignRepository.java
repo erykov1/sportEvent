@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-class InMemorySportEventAssignRepository implements SportEventAssignRepository {
+class gitInMemorySportEventAssignRepository implements SportEventAssignRepository {
   private Map<Long, SportEventAssign> table = new ConcurrentHashMap<>();
 
   @Override

@@ -22,4 +22,5 @@ class SportEvent {
   Long maxParticipants;
   @Enumerated(EnumType.STRING)
   SportEventType sportEventType;
+  Long sportEventAddress;
 }
