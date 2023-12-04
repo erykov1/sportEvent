@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.FluentQuery;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
@@ -96,8 +97,15 @@ class InMemoryUserRepository implements UserRepository{
   }
 
   @Override
-  public <S extends User> S save(S entity) {
-    return null;
+  public User save(User entity) {
+    if (entity.dto().getUserId() == null) {
+      Long userId = new Random().nextLong();
+      entity = entity.toBuilder()
+          .userId(userId)
+          .build();
+    }
+    table.put(entity.dto().getUserId(), entity);
+    return entity;
   }
 
   @Override
@@ -163,5 +171,12 @@ class InMemoryUserRepository implements UserRepository{
   @Override
   public Page<User> findAll(Pageable pageable) {
     return null;
+  }
+
+  @Override
+  public Optional<User> findByUsername(String username) {
+    return table.values().stream()
+        .filter(user -> user.dto().getUsername().equals(username))
+        .findFirst();
   }
 }
