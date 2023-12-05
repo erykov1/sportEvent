@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.experimental.FieldDefaults;
+import tijo.sportEventApp.sportEvent.dto.SportEventDto;
 
 import java.time.Instant;
 
@@ -23,4 +24,17 @@ class SportEvent {
   @Enumerated(EnumType.STRING)
   SportEventType sportEventType;
   Long sportEventAddress;
+
+  SportEventDto dto() {
+    return SportEventDto.builder()
+            .sportEventId(sportEventId)
+            .eventName(eventName)
+            .eventTime(eventTime)
+            .registrationDeadline(registrationDeadline)
+            .description(description)
+            .maxParticipants(maxParticipants)
+            .sportEventType(sportEventType.dto())
+            .sportEventAddress(sportEventAddress)
+            .build();
+  }
 }
