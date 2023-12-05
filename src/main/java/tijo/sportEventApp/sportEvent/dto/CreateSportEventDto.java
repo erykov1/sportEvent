@@ -20,5 +20,6 @@ public class CreateSportEventDto {
   Long maxParticipants;
   @Enumerated(EnumType.STRING)
   SportEventTypeDto sportEventType;
-  Long eventAddress;
+  Long sportEventAddress;
 }
+
