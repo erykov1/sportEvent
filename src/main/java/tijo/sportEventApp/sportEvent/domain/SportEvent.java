@@ -10,7 +10,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "sport_events")
-@Builder()
+@Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class SportEvent {
   @Id

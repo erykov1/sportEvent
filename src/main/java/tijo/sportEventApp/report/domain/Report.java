@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.experimental.FieldDefaults;
+import tijo.sportEventApp.report.dto.ReportDto;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -16,11 +17,19 @@ import java.util.UUID;
 class Report {
   @Id
   UUID reportId;
-  String name;
-  String surname;
+  String username;
   @Enumerated(EnumType.STRING)
   ReportStatus reportStatus;
   Instant reportedAt;
-  Long eventId;
   Long sportEventId;
+
+  ReportDto dto() {
+    return ReportDto.builder()
+        .reportId(reportId)
+        .username(username)
+        .reportStatus(reportStatus.dto())
+        .reportedAt(reportedAt)
+        .sportEventId(sportEventId)
+        .build();
+  }
 }

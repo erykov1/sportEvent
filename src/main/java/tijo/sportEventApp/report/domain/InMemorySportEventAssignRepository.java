@@ -165,4 +165,11 @@ class InMemorySportEventAssignRepository implements SportEventAssignRepository {
   public Page<SportEventAssign> findAll(Pageable pageable) {
     return null;
   }
+
+  @Override
+  public Optional<SportEventAssign> findSportEventBySportEventId(Long sportEventId) {
+    return table.values().stream()
+        .filter(sportEvent -> sportEvent.dto().getSportEventId().equals(sportEventId))
+        .findFirst();
+  }
 }

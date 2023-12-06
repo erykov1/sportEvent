@@ -188,4 +188,5 @@ class InMemorySportEventRepository implements SportEventRepository {
             .filter(sportEvent -> sportEvent.dto().getSportEventAddress().equals(sportEventAddress))
             .filter(sportEvent -> sportEvent.dto().getEventTime().equals(eventTime))
             .findFirst();
-  }}
+  }
+}
