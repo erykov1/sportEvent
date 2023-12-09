@@ -9,11 +9,12 @@ import org.springframework.data.repository.query.FluentQuery;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 class InMemorySportEventAddressRepository implements SportEventAddressRepository {
-  private Map<Long, SportEvent> table = new ConcurrentHashMap<>();
+  private Map<Long, SportEventAddress> table = new ConcurrentHashMap<>();
 
   @Override
   public void flush() {
@@ -101,6 +102,17 @@ class InMemorySportEventAddressRepository implements SportEventAddressRepository
   }
 
   @Override
+  public SportEventAddress save(SportEventAddress entity) {
+    if (entity.dto().getEventAddressId() == null) {
+      Long eventAddressId = new Random().nextLong();
+      entity = entity.toBuilder()
+              .eventAddressId(eventAddressId)
+              .build();
+    }
+    table.put(entity.dto().getEventAddressId(), entity);
+    return entity;
+  }
+  @Override
   public <S extends SportEventAddress> List<S> saveAll(Iterable<S> entities) {
     return null;
   }
@@ -115,6 +127,10 @@ class InMemorySportEventAddressRepository implements SportEventAddressRepository
     return false;
   }
 
+  @Override
+  public List<SportEventAddress> findAll() {
+    return table.values().stream().toList();
+  }
   @Override
   public List<SportEventAddress> findAll() {
     return null;
@@ -164,4 +180,14 @@ class InMemorySportEventAddressRepository implements SportEventAddressRepository
   public Page<SportEventAddress> findAll(Pageable pageable) {
     return null;
   }
-}
+
+
+  @Override
+  public Optional<SportEventAddress> findSportEventAddressByDetails(String postalCode, String city, String street, String streetNumber) {
+    return table.values().stream()
+            .filter(address -> address.dto().getPostalCode().equals(postalCode))
+            .filter(address -> address.dto().getCity().equals(city))
+            .filter(address -> address.dto().getStreet().equals(street))
+            .filter(address -> address.dto().getStreetNumber().equals(streetNumber))
+            .findFirst();
+  }

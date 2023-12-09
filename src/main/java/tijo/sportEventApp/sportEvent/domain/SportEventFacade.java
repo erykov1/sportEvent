@@ -11,6 +11,7 @@ import tijo.sportEventApp.utils.InstantProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -19,12 +20,25 @@ public class SportEventFacade {
   SportEventAddressRepository sportEventAddressRepository;
   InstantProvider instantProvider;
 
-  public SportEventAddressDto createEventAddressDto(CreateSportEventAddressDto createSportEventAddressDto) {
-    return SportEventAddressDto.builder().build();
+  public SportEventAddressDto createEventAddress(CreateSportEventAddressDto createSportEventAddress) {
+    if (sportEventAddressRepository.findSportEventAddressByDetails(createSportEventAddress.getPostalCode(),
+            createSportEventAddress.getCity(), createSportEventAddress.getStreet(), createSportEventAddress.getStreetNumber()
+    ).isPresent()) {
+      return SportEventAddressDto.builder().build();
+    }
+    SportEventAddress sportEventAddressSave = SportEventAddress.builder()
+            .postalCode(createSportEventAddress.getPostalCode())
+            .city(createSportEventAddress.getCity())
+            .street(createSportEventAddress.getStreet())
+            .streetNumber(createSportEventAddress.getStreetNumber())
+            .build();
+    return sportEventAddressRepository.save(sportEventAddressSave).dto();
   }
 
   public List<SportEventAddressDto> findAllEventAddresses() {
-    return new ArrayList<>();
+    return sportEventAddressRepository.findAll().stream()
+            .map(SportEventAddress::dto)
+            .collect(Collectors.toList());
   }
 
   public SportEventDto createSportEvent(CreateSportEventDto createSportEventDto) {
