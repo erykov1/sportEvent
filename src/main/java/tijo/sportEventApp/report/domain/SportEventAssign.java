@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.experimental.FieldDefaults;
+import tijo.sportEventApp.report.dto.SportEventAssignDto;
+
 import java.time.Instant;
 import java.util.Set;
 
@@ -17,4 +19,13 @@ class SportEventAssign {
   Long maxParticipants;
   Instant registrationDeadline;
   Instant eventTime;
+
+  SportEventAssignDto dto() {
+    return SportEventAssignDto.builder()
+        .sportEventId(sportEventId)
+        .maxParticipants(maxParticipants)
+        .registrationDeadline(registrationDeadline)
+        .eventTime(eventTime)
+        .build();
+  }
 }

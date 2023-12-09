@@ -13,8 +13,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CreateReportDto {
-  String name;
-  String surname;
-  Long eventId;
+  String username;
+  Long sportEventId;
 }
 

@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 class InMemoryReportRepository implements ReportRepository {
   private Map<UUID, Report> table = new ConcurrentHashMap<>();
@@ -163,5 +164,26 @@ class InMemoryReportRepository implements ReportRepository {
   @Override
   public Page<Report> findAll(Pageable pageable) {
     return null;
+  }
+
+  @Override
+  public List<Report> findAllReportsByUsername(String username) {
+    return table.values().stream()
+        .filter(report -> report.dto().getUsername().equals(username))
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public Optional<Report> findByReportId(UUID reportId) {
+    return table.values().stream()
+        .filter(report -> report.dto().getReportId().equals(reportId))
+        .findFirst();
+  }
+
+  @Override
+  public List<Report> findAllReportsBySportEventId(Long sportEventId) {
+    return table.values().stream()
+        .filter(report -> report.dto().getSportEventId().equals(sportEventId))
+        .collect(Collectors.toList());
   }
 }

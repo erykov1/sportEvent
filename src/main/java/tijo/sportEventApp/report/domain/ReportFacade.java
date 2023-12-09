@@ -5,16 +5,19 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import tijo.sportEventApp.report.dto.CreateReportDto;
 import tijo.sportEventApp.report.dto.ReportDto;
 import tijo.sportEventApp.report.dto.ReportStatusDto;
 import tijo.sportEventApp.report.dto.UpdateReportDto;
+import tijo.sportEventApp.report.exception.ReportNotFoundException;
+import tijo.sportEventApp.sportEvent.exception.FullParticipantsException;
+import tijo.sportEventApp.sportEvent.exception.NotExistingSportEventException;
 import tijo.sportEventApp.utils.InstantProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Builder
@@ -25,29 +28,69 @@ public class ReportFacade {
   InstantProvider instantProvider;
 
   public ReportDto createReport(CreateReportDto createReportDto) {
-    return ReportDto.builder().build();
+    checkIfReachMaxParticipant(createReportDto.getSportEventId(), countAllSportEventReports(createReportDto.getSportEventId()));
+    Report saveReport = Report.builder()
+        .reportId(UUID.randomUUID())
+        .username(createReportDto.getUsername())
+        .reportStatus(ReportStatus.PENDING)
+        .reportedAt(instantProvider.now())
+        .sportEventId(createReportDto.getSportEventId())
+        .build();
+    return reportRepository.save(saveReport).dto();
   }
 
   public List<ReportDto> getAllUserReports(String username) {
-    return new ArrayList<>();
+    return reportRepository.findAllReportsByUsername(username).stream()
+        .map(Report::dto)
+        .collect(Collectors.toList());
   }
 
   public UpdateReportDto acceptReport(UUID reportId) {
-    return UpdateReportDto.builder().build();
+    Report acceptReport = reportRepository.findByReportId(reportId)
+        .orElseThrow(() -> new ReportNotFoundException("Report with such id not found"));
+    acceptReport = acceptReport.toBuilder()
+        .reportStatus(ReportStatus.ACCEPTED)
+        .build();
+    reportRepository.save(acceptReport).dto();
+    return new UpdateReportDto(reportId, ReportStatus.ACCEPTED.dto());
   }
 
   public UpdateReportDto declineReport(UUID reportId) {
-    return UpdateReportDto.builder().build();
+    Report declineReport = reportRepository.findByReportId(reportId)
+        .orElseThrow(() -> new ReportNotFoundException("Report with such id not found"));
+    declineReport = declineReport.toBuilder()
+        .reportStatus(ReportStatus.ACCEPTED)
+        .build();
+    reportRepository.save(declineReport).dto();
+    return new UpdateReportDto(reportId, ReportStatus.DECLINED.dto());
   }
 
-  public List<ReportDto> getAllReportsByStatus(ReportStatusDto reportStatus) {
-    return new ArrayList<>();
+  public List<ReportDto> getAllReportsByStatus(String reportStatus) {
+    return reportRepository.findAll().stream()
+        .filter(report -> report.dto().getReportStatus().name().equals(reportStatus))
+        .map(Report::dto)
+        .collect(Collectors.toList());
   }
 
   public void deleteReport(UUID reportId) {
+    reportRepository.deleteById(reportId);
   }
 
   public List<ReportDto> findAllReports() {
-    return new ArrayList<>();
+    return reportRepository.findAll().stream()
+        .map(Report::dto)
+        .collect(Collectors.toList());
+  }
+
+  private void checkIfReachMaxParticipant(Long sportEventId, Long currentParticipantNumber) {
+    SportEventAssign sportEventAssign = sportEventAssignRepository.findSportEventBySportEventId(sportEventId)
+        .orElseThrow(() -> new NotExistingSportEventException("Sport event does not exist"));
+    if(sportEventAssign.dto().getMaxParticipants() >= currentParticipantNumber) {
+      throw new FullParticipantsException("There are already full participants");
+    }
+  }
+
+  private Long countAllSportEventReports(Long sportEventId) {
+    return (long) reportRepository.findAllReportsBySportEventId(sportEventId).size();
   }
 }
