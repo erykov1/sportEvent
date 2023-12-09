@@ -10,7 +10,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "sport_events")
-@Builder(toBuilder = true)
+@Builder()
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class SportEvent {
   @Id
@@ -24,6 +24,7 @@ class SportEvent {
   @Enumerated(EnumType.STRING)
   SportEventType sportEventType;
   Long sportEventAddress;
+}
 
   SportEventDto dto() {
     return SportEventDto.builder()

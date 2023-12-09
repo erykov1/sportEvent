@@ -5,12 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
-
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
@@ -98,15 +95,8 @@ class InMemorySportEventRepository implements SportEventRepository {
   }
 
   @Override
-  public SportEvent save(SportEvent entity) {
-    if (entity.dto().getSportEventId() == null) {
-      Long sportEventId = new Random().nextLong();
-      entity = entity.toBuilder()
-              .sportEventId(sportEventId)
-              .build();
-    }
-    table.put(entity.dto().getSportEventId(), entity);
-    return entity;
+  public <S extends SportEvent> S save(S entity) {
+    return null;
   }
 
   @Override
@@ -126,7 +116,7 @@ class InMemorySportEventRepository implements SportEventRepository {
 
   @Override
   public List<SportEvent> findAll() {
-    return table.values().stream().toList();
+    return null;
   }
 
   @Override
@@ -172,21 +162,5 @@ class InMemorySportEventRepository implements SportEventRepository {
   @Override
   public Page<SportEvent> findAll(Pageable pageable) {
     return null;
-  }
-
-
-  @Override
-  public Optional<SportEvent> findBySportEventId(Long sportEventId) {
-    return table.values().stream()
-            .filter(sportEvent -> sportEvent.dto().getSportEventId().equals(sportEventId))
-            .findFirst();
-  }
-
-  @Override
-  public Optional<SportEvent> findBySportEventAddressAndEventTime(Long sportEventAddress, Instant eventTime) {
-    return table.values().stream()
-            .filter(sportEvent -> sportEvent.dto().getSportEventAddress().equals(sportEventAddress))
-            .filter(sportEvent -> sportEvent.dto().getEventTime().equals(eventTime))
-            .findFirst();
   }
 }
