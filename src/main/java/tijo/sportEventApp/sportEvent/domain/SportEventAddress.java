@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.experimental.FieldDefaults;
+import tijo.sportEventApp.sportEvent.dto.SportEventAddressDto;
 
 @Entity
 @Table(name = "sport_events_addresses")
@@ -17,4 +18,14 @@ class SportEventAddress {
   String city;
   String street;
   String streetNumber;
+
+  SportEventAddressDto dto() {
+    return SportEventAddressDto.builder()
+            .eventAddressId(eventAddressId)
+            .postalCode(postalCode)
+            .city(city)
+            .street(street)
+            .streetNumber(streetNumber)
+            .build();
+  }
 }

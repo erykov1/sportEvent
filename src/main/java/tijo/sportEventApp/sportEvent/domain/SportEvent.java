@@ -24,6 +24,7 @@ class SportEvent {
   @Enumerated(EnumType.STRING)
   SportEventType sportEventType;
   Long sportEventAddress;
+}
 
   SportEventDto dto() {
     return SportEventDto.builder()
