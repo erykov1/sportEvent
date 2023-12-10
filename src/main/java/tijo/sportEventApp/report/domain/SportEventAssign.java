@@ -7,7 +7,6 @@ import lombok.experimental.FieldDefaults;
 import tijo.sportEventApp.report.dto.SportEventAssignDto;
 
 import java.time.Instant;
-import java.util.Set;
 
 @Entity
 @Table(name = "sport_events_assign")
@@ -15,6 +14,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class SportEventAssign {
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   Long sportEventId;
   Long maxParticipants;
   Instant registrationDeadline;

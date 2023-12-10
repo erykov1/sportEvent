@@ -3,14 +3,10 @@ package tijo.sportEventApp.sportEvent.domain;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.experimental.FieldDefaults;
-import tijo.sportEventApp.sportEvent.dto.CreateSportEventAddressDto;
-import tijo.sportEventApp.sportEvent.dto.CreateSportEventDto;
-import tijo.sportEventApp.sportEvent.dto.SportEventAddressDto;
-import tijo.sportEventApp.sportEvent.dto.SportEventDto;
+import tijo.sportEventApp.report.dto.SportEventAssignDto;
+import tijo.sportEventApp.sportEvent.dto.*;
 import tijo.sportEventApp.sportEvent.exception.AlreadyReservedAddressException;
 import tijo.sportEventApp.utils.InstantProvider;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +16,7 @@ public class SportEventFacade {
   SportEventRepository sportEventRepository;
   SportEventAddressRepository sportEventAddressRepository;
   InstantProvider instantProvider;
+  SportEventPublisher sportEventPublisher;
 
   public SportEventAddressDto createEventAddress(CreateSportEventAddressDto createSportEventAddress) {
     if (sportEventAddressRepository.findSportEventAddressByDetails(createSportEventAddress.getPostalCode(),
@@ -53,6 +50,7 @@ public class SportEventFacade {
             .sportEventType(SportEventType.valueOf(createSportEvent.getSportEventType().name()))
             .sportEventAddress(createSportEvent.getSportEventAddress())
             .build();
+    emmitEvent(sportEvent);
     return sportEventRepository.save(sportEvent).dto();
   }
 
@@ -67,5 +65,15 @@ public class SportEventFacade {
             createSportEvent.getEventTime()).isPresent()) {
       throw new AlreadyReservedAddressException("Address has been already reserved");
     }
+  }
+
+  private void emmitEvent(SportEvent sportEvent) {
+    SportEventAssignDto sportEventPublish = SportEventAssignDto.builder()
+        .sportEventId(sportEvent.dto().getSportEventId())
+        .maxParticipants(sportEvent.dto().getMaxParticipants())
+        .registrationDeadline(sportEvent.dto().getRegistrationDeadline())
+        .eventTime(sportEvent.dto().getEventTime())
+        .build();
+    sportEventPublisher.notifySportEventCreated(sportEventPublish);
   }
 }
