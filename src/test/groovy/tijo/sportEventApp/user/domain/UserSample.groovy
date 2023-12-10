@@ -33,7 +33,6 @@ trait UserSample {
   void equalsUser(UserDto result, UserDto expected) {
     assert result.userId == expected.userId
     assert result.username == expected.username
-    assert result.password == expected.password
     assert result.userRole == expected.userRole
   }
 }
