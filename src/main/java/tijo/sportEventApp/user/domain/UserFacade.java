@@ -3,6 +3,7 @@ package tijo.sportEventApp.user.domain;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import tijo.sportEventApp.user.dto.CreateUserDto;
 import tijo.sportEventApp.user.dto.UserDto;
 import tijo.sportEventApp.user.exception.InvalidFieldException;
@@ -13,13 +14,14 @@ import tijo.sportEventApp.user.exception.UsernameAlreadyTakenException;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserFacade {
   UserRepository userRepository;
+  BCryptPasswordEncoder bCryptPasswordEncoder;
 
   public UserDto createUser(CreateUserDto user) {
     checkIfUserIsAlreadyCreated(user.getUsername());
     checkIfFieldsAreValid(user);
     User saveUser = User.builder()
         .username(user.getUsername())
-        .password(user.getPassword())
+        .password(bCryptPasswordEncoder.encode(user.getPassword()))
         .userRole(UserRole.USER)
         .build();
     return userRepository.save(saveUser).dto();
