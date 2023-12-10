@@ -67,8 +67,7 @@ trait SportEventSample {
   }
 
   void equalsSportEvents(List<SportEventDto> sportEvents, List<SportEventDto> expected) {
-    def comparator = Comparator.comparing(SportEventDto::getSportEventId)
-        .thenComparing(Comparator.comparing(SportEventDto::getEventName))
+    def comparator = Comparator.comparing(SportEventDto::getEventTime)
     sportEvents.sort(comparator)
     assert sportEvents.sportEventId == expected.sportEventId
     assert sportEvents.eventName == expected.eventName

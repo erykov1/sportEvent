@@ -5,16 +5,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.experimental.FieldDefaults;
-import tijo.sportEventApp.report.dto.CreateReportDto;
-import tijo.sportEventApp.report.dto.ReportDto;
-import tijo.sportEventApp.report.dto.ReportStatusDto;
-import tijo.sportEventApp.report.dto.UpdateReportDto;
+import org.springframework.context.event.EventListener;
+import tijo.sportEventApp.report.dto.*;
 import tijo.sportEventApp.report.exception.ReportNotFoundException;
 import tijo.sportEventApp.sportEvent.exception.FullParticipantsException;
 import tijo.sportEventApp.sportEvent.exception.NotExistingSportEventException;
 import tijo.sportEventApp.utils.InstantProvider;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -92,5 +88,16 @@ public class ReportFacade {
 
   private Long countAllSportEventReports(Long sportEventId) {
     return (long) reportRepository.findAllReportsBySportEventId(sportEventId).size();
+  }
+
+  @EventListener
+  private SportEventAssignDto onSportEventCreate(SportEventAssignDto sportEventPublish) {
+    SportEventAssign sportEventAssign = SportEventAssign.builder()
+        .sportEventId(sportEventPublish.getSportEventId())
+        .maxParticipants(sportEventPublish.getMaxParticipants())
+        .registrationDeadline(sportEventPublish.getRegistrationDeadline())
+        .eventTime(sportEventPublish.getEventTime())
+        .build();
+    return sportEventAssignRepository.save(sportEventAssign).dto();
   }
 }
