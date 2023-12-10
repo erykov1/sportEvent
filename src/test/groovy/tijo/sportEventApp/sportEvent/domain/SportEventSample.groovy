@@ -56,7 +56,7 @@ trait SportEventSample {
         .eventTime(changesWithDefaults.eventTime as Instant)
         .registrationDeadline(changesWithDefaults.registrationDeadline as Instant)
         .description(changesWithDefaults.description as String)
-        .eventAddress(changesWithDefaults.eventAddress as Long)
+        .sportEventAddress(changesWithDefaults.eventAddress as Long)
         .maxParticipants(changesWithDefaults.maxParticipants as Long)
         .sportEventType(changesWithDefaults.sportEventType as SportEventTypeDto)
         .build()

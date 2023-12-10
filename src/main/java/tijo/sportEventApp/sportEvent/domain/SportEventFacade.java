@@ -7,6 +7,7 @@ import tijo.sportEventApp.sportEvent.dto.CreateSportEventAddressDto;
 import tijo.sportEventApp.sportEvent.dto.CreateSportEventDto;
 import tijo.sportEventApp.sportEvent.dto.SportEventAddressDto;
 import tijo.sportEventApp.sportEvent.dto.SportEventDto;
+import tijo.sportEventApp.sportEvent.exception.AlreadyReservedAddressException;
 import tijo.sportEventApp.utils.InstantProvider;
 
 import java.util.ArrayList;
@@ -41,11 +42,30 @@ public class SportEventFacade {
             .collect(Collectors.toList());
   }
 
-  public SportEventDto createSportEvent(CreateSportEventDto createSportEventDto) {
-    return SportEventDto.builder().build();
+  public SportEventDto createSportEvent(CreateSportEventDto createSportEvent) {
+    checkIfAlreadyReserved(createSportEvent);
+    SportEvent sportEvent = SportEvent.builder()
+            .eventName(createSportEvent.getEventName())
+            .eventTime(createSportEvent.getEventTime())
+            .registrationDeadline(createSportEvent.getRegistrationDeadline())
+            .description(createSportEvent.getDescription())
+            .maxParticipants(createSportEvent.getMaxParticipants())
+            .sportEventType(SportEventType.valueOf(createSportEvent.getSportEventType().name()))
+            .sportEventAddress(createSportEvent.getSportEventAddress())
+            .build();
+    return sportEventRepository.save(sportEvent).dto();
   }
 
+
   public List<SportEventDto> findAllSportEvents() {
-    return new ArrayList<>();
+    return sportEventRepository.findAll().stream()
+            .map(SportEvent::dto)
+            .collect(Collectors.toList());
+  }
+  private void checkIfAlreadyReserved(CreateSportEventDto createSportEvent) {
+    if (sportEventRepository.findBySportEventAddressAndEventTime(createSportEvent.getSportEventAddress(),
+            createSportEvent.getEventTime()).isPresent()) {
+      throw new AlreadyReservedAddressException("Address has been already reserved");
+    }
   }
 }
