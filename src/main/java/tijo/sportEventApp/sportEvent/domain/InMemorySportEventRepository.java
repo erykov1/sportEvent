@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
+
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -162,5 +164,15 @@ class InMemorySportEventRepository implements SportEventRepository {
   @Override
   public Page<SportEvent> findAll(Pageable pageable) {
     return null;
+  }
+
+  @Override
+  public Optional<SportEvent> findBySportEventId(Long sportEventId) {
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<SportEvent> findBySportEventAddressAndEventTime(Long sportEventAddress, Instant eventTime) {
+    return Optional.empty();
   }
 }

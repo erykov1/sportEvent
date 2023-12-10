@@ -97,21 +97,17 @@ class InMemorySportEventAddressRepository implements SportEventAddressRepository
   }
 
   @Override
-  public <S extends SportEventAddress> S save(S entity) {
-    return null;
-  }
-
-  @Override
   public SportEventAddress save(SportEventAddress entity) {
     if (entity.dto().getEventAddressId() == null) {
       Long eventAddressId = new Random().nextLong();
       entity = entity.toBuilder()
-              .eventAddressId(eventAddressId)
-              .build();
+          .eventAddressId(eventAddressId)
+          .build();
     }
     table.put(entity.dto().getEventAddressId(), entity);
     return entity;
   }
+
   @Override
   public <S extends SportEventAddress> List<S> saveAll(Iterable<S> entities) {
     return null;
@@ -130,10 +126,6 @@ class InMemorySportEventAddressRepository implements SportEventAddressRepository
   @Override
   public List<SportEventAddress> findAll() {
     return table.values().stream().toList();
-  }
-  @Override
-  public List<SportEventAddress> findAll() {
-    return null;
   }
 
   @Override
@@ -185,9 +177,10 @@ class InMemorySportEventAddressRepository implements SportEventAddressRepository
   @Override
   public Optional<SportEventAddress> findSportEventAddressByDetails(String postalCode, String city, String street, String streetNumber) {
     return table.values().stream()
-            .filter(address -> address.dto().getPostalCode().equals(postalCode))
-            .filter(address -> address.dto().getCity().equals(city))
-            .filter(address -> address.dto().getStreet().equals(street))
-            .filter(address -> address.dto().getStreetNumber().equals(streetNumber))
-            .findFirst();
+        .filter(address -> address.dto().getPostalCode().equals(postalCode))
+        .filter(address -> address.dto().getCity().equals(city))
+        .filter(address -> address.dto().getStreet().equals(street))
+        .filter(address -> address.dto().getStreetNumber().equals(streetNumber))
+        .findFirst();
   }
+}

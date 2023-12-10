@@ -8,7 +8,7 @@ import tijo.sportEventApp.sportEvent.dto.SportEventAddressDto;
 
 @Entity
 @Table(name = "sport_events_addresses")
-@Builder()
+@Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class SportEventAddress {
   @Id
