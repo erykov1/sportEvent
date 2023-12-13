@@ -19,13 +19,15 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 class TokenService {
   JwtEncoder jwtEncoder;
+  InstantProvider instantProvider;
 
-  TokenService(JwtEncoder jwtEncoder) {
+  TokenService(JwtEncoder jwtEncoder, InstantProvider instantProvider) {
     this.jwtEncoder = jwtEncoder;
+    this.instantProvider = instantProvider;
   }
 
-  public String generateToken(Authentication authentication, InstantProvider provider) {
-    Instant now = provider.now();
+  public String generateToken(Authentication authentication) {
+    Instant now = instantProvider.now();
     String role = authentication.getAuthorities().stream()
         .map(GrantedAuthority::getAuthority)
         .collect(Collectors.joining(" "));
