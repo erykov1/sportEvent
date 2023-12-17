@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 public class InstantProvider {
   private static final DateTimeFormatter SHORT_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
   Clock clock = Clock.systemUTC();
+  private static final String LOCAL_DATE_TIME = "Europe/Warsaw";
 
   public Instant now() {
     return Instant.now(clock);
@@ -24,5 +25,10 @@ public class InstantProvider {
     LocalDateTime localDate = LocalDateTime.parse(time, SHORT_DATE_FORMATTER);
     ZonedDateTime zonedDateTime = localDate.atZone(ZoneId.of("CET"));
     return zonedDateTime.toInstant();
+  }
+
+  public static String toFormatted(Instant input) {
+    LocalDateTime dateTime = input.atZone(ZoneId.of(LOCAL_DATE_TIME)).toLocalDateTime();
+    return SHORT_DATE_FORMATTER.format(dateTime);
   }
 }

@@ -33,6 +33,10 @@ public class UserFacade {
         .orElseThrow(() -> new UserNotFoundException("User with given username not found"));
   }
 
+  public void cleanup() {
+    userRepository.deleteAll();
+  }
+
   private void checkIfUserIsAlreadyCreated(String username) {
     if (userRepository.findByUsername(username).isPresent()) {
       throw new UsernameAlreadyTakenException("There is already created user with such username");

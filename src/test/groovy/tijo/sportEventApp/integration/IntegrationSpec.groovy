@@ -1,38 +1,34 @@
 package tijo.sportEventApp.integration
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.aspectj.lang.annotation.Before
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import org.springframework.web.context.WebApplicationContext
+import tijo.sportEventApp.configuration.ObjectMapperConfiguration
 import spock.lang.Specification
-import tijo.sportEventApp.utils.InstantProvider
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.test.context.junit4.SpringRunner
+import tijo.sportEventApp.report.ReportController
+import tijo.sportEventApp.report.domain.ReportFacade
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 abstract class IntegrationSpec extends Specification {
-  @Autowired
-  protected WebApplicationContext context
-
   private MockMvc mockMvc
 
-  private ObjectMapper objectMapper
+  @Autowired
+  private ObjectMapper objectMapper = ObjectMapperConfiguration.createObjectMapper();
 
   @Autowired
-  InstantProvider instantProvider
+  private ReportFacade reportFacade
 
   SportEventAppApi api
 
-  @Before
-  def setupMockMvc() {
-    mockMvc = MockMvcBuilders.webAppContextSetup(context)
-      .apply(SecurityMockMvcConfigurers.springSecurity())
-      .build()
-    api = new SportEventAppApi(mockMvc, objectMapper)
+  def setup() {
+    mockMvc = MockMvcBuilders
+        .standaloneSetup(new ReportController(reportFacade))
+        .build();
+    api = new SportEventAppApi(mockMvc, objectMapper);
   }
 }

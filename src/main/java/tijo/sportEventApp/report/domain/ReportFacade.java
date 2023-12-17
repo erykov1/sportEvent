@@ -78,6 +78,11 @@ public class ReportFacade {
         .collect(Collectors.toList());
   }
 
+  public void cleanup() {
+    reportRepository.deleteAll();
+    sportEventAssignRepository.deleteAll();
+  }
+
   private void checkIfReachMaxParticipant(Long sportEventId, Long currentParticipantNumber) {
     SportEventAssign sportEventAssign = sportEventAssignRepository.findSportEventBySportEventId(sportEventId)
         .orElseThrow(() -> new NotExistingSportEventException("Sport event does not exist"));
@@ -99,5 +104,10 @@ public class ReportFacade {
         .eventTime(sportEventPublish.getEventTime())
         .build();
     return sportEventAssignRepository.save(sportEventAssign).dto();
+  }
+
+  @EventListener
+  private void onSportEventDelete(SportEventAssignDeleteDto sportEventDelete) {
+    sportEventAssignRepository.deleteById(sportEventDelete.getSportEventId());
   }
 }

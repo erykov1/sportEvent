@@ -1,7 +1,9 @@
 package tijo.sportEventApp.report;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/report")
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 class ReportController {
   ReportFacade reportFacade;
 
@@ -44,5 +47,12 @@ class ReportController {
   @GetMapping("/all")
   ResponseEntity<List<ReportDto>> findReports() {
     return ResponseEntity.ok(reportFacade.findAllReports());
+  }
+
+  @GetMapping(value = "/cleanup")
+  @Hidden
+  ResponseEntity<String> cleanup() {
+    reportFacade.cleanup();
+    return ResponseEntity.ok("Report cleanup");
   }
 }

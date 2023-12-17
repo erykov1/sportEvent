@@ -66,6 +66,11 @@ class SportEventAppApi {
       UserDto value = mapper.readValue(perform.andReturn().response.getContentAsString(StandardCharsets.UTF_8), mapper.getTypeFactory().constructType(UserDto.class))
       value
     }
+
+    void cleanup() {
+      ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/api/user/cleanup"))
+      checkResponse(perform.andReturn().response)
+    }
   }
 
   class ReportApi {
@@ -128,6 +133,11 @@ class SportEventAppApi {
           mapper.getTypeFactory().constructCollectionType(List.class, ReportDto.class))
       value
     }
+
+    void cleanup() {
+      ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/api/report/cleanup"))
+      checkResponse(perform.andReturn().response)
+    }
   }
 
   class SportEventApi {
@@ -175,6 +185,11 @@ class SportEventAppApi {
       List<SportEventAddressDto> value = mapper.readValue(perform.andReturn().response.getContentAsString(StandardCharsets.UTF_8),
           mapper.getTypeFactory().constructCollectionType(List.class, SportEventAddressDto.class))
       value
+    }
+
+    void cleanup() {
+      ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/api/sportEvent/cleanup"))
+      checkResponse(perform.andReturn().response)
     }
   }
 

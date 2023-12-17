@@ -1,6 +1,7 @@
 package tijo.sportEventApp.sportEvent.domain
 
 import tijo.sportEventApp.integration.IntegrationSpec
+import tijo.sportEventApp.integration.SportEventAppApi
 import tijo.sportEventApp.sportEvent.dto.CreateSportEventAddressDto
 import tijo.sportEventApp.sportEvent.dto.SportEventAddressDto
 import tijo.sportEventApp.sportEvent.dto.SportEventDto
@@ -65,5 +66,11 @@ class SportEventAcceptanceSpec extends IntegrationSpec implements SportEventSamp
         city: "Krakow", street: "Mickiewicza", streetNumber: "34A"
       ), createEventAddress(eventAddressId: tarnow.eventAddressId, postalCode: "30-100",
           city: "Tarnow", street: "Mickiewicza", streetNumber: "34A")])
+  }
+
+  def cleanup() {
+    api.sportEvent().cleanup()
+    api.report().cleanup()
+    api.user().cleanup()
   }
 }

@@ -1,6 +1,6 @@
-package tijo.sportEventApp.report.domain
+package tijo.sportEventApp.integration
 
-import tijo.sportEventApp.integration.IntegrationSpec
+import tijo.sportEventApp.report.domain.ReportSample
 import tijo.sportEventApp.report.dto.CreateReportDto
 import tijo.sportEventApp.report.dto.ReportStatusDto
 
@@ -41,5 +41,11 @@ class ReportAcceptanceSpec extends IntegrationSpec implements ReportSample {
       api.report().deleteReport(report.reportId)
     then: "report is deleted"
       !api.report().findReports().contains(report)
+  }
+
+  def cleanup() {
+    api.sportEvent().cleanup()
+    api.report().cleanup()
+    api.user().cleanup()
   }
 }

@@ -20,4 +20,10 @@ class UserAcceptanceSpec extends IntegrationSpec implements UserSample {
     then: "finds user by username"
       equalsUser(result, createUser(userId: result.userId, username: "jane", password: "jane123", userRole: UserRoleDto.USER))
   }
+
+  def cleanup() {
+    api.sportEvent().cleanup()
+    api.report().cleanup()
+    api.user().cleanup()
+  }
 }

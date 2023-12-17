@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.ApplicationEventPublisher;
+import tijo.sportEventApp.report.dto.SportEventAssignDeleteDto;
 import tijo.sportEventApp.report.dto.SportEventAssignDto;
 
 @AllArgsConstructor
@@ -13,5 +14,9 @@ class SportEventPublisher {
 
   void notifySportEventCreated(SportEventAssignDto sportEventPublish) {
     applicationEventPublisher.publishEvent(sportEventPublish);
+  }
+
+  void notifySportEventDeleted(SportEventAssignDeleteDto sportEventDelete) {
+    applicationEventPublisher.publishEvent(sportEventDelete);
   }
 }

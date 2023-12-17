@@ -1,5 +1,6 @@
 package tijo.sportEventApp.sportEvent;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -38,5 +39,27 @@ class SportEventController {
   @GetMapping("/address/all")
   ResponseEntity<List<SportEventAddressDto>> getAllSportEventsAddresses() {
     return ResponseEntity.ok(sportEventFacade.findAllEventAddresses());
+  }
+
+  @GetMapping("/details/sportEventId")
+  ResponseEntity<SportEventDto> getSportEvent(@PathVariable Long sportEventId) {
+    return ResponseEntity.ok(sportEventFacade.findSportEventById(sportEventId));
+  }
+
+  @GetMapping("/address/details/sportEventAddressId")
+  ResponseEntity<SportEventAddressDto> getSportEventAddress(@PathVariable Long sportEventAddressId) {
+    return ResponseEntity.ok(sportEventFacade.findSportEventAddressById(sportEventAddressId));
+  }
+
+  @GetMapping("/eventType")
+  ResponseEntity<List<SportEventDto>> getEventSportByType(@PathVariable String eventType) {
+    return ResponseEntity.ok(sportEventFacade.findAllSportEventsByType(eventType));
+  }
+
+  @GetMapping(value = "/cleanup")
+  @Hidden
+  ResponseEntity<String> cleanup() {
+    sportEventFacade.cleanup();
+    return ResponseEntity.ok("Sport event cleanup");
   }
 }

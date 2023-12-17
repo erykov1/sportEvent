@@ -1,5 +1,6 @@
 package tijo.sportEventApp.user;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,5 +25,12 @@ class UserController {
   @GetMapping("/{username}")
   ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
     return ResponseEntity.ok(userFacade.findByUsername(username));
+  }
+
+  @GetMapping(value = "/cleanup")
+  @Hidden
+  ResponseEntity<String> cleanup() {
+    userFacade.cleanup();
+    return ResponseEntity.ok("User cleanup");
   }
 }
