@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import tijo.sportEventApp.report.dto.SportEventAssignDto;
 import tijo.sportEventApp.sportEvent.dto.*;
 import tijo.sportEventApp.sportEvent.exception.AlreadyReservedAddressException;
+import tijo.sportEventApp.sportEvent.exception.NotExistingSportEventException;
 import tijo.sportEventApp.utils.InstantProvider;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +38,23 @@ public class SportEventFacade {
     return sportEventAddressRepository.findAll().stream()
             .map(SportEventAddress::dto)
             .collect(Collectors.toList());
+  }
+
+  public SportEventDto findSportEventById(Long sportEventId) {
+    return sportEventRepository.findBySportEventId(sportEventId)
+        .orElseThrow(() -> new NotExistingSportEventException("Sport event does not exist")).dto();
+  }
+
+  public SportEventAddressDto findSportEventAddressById(Long sportEventAddressId) {
+    return sportEventAddressRepository.findById(sportEventAddressId)
+        .orElseThrow(() -> new NotExistingSportEventException("Sport event address does not exist")).dto();
+  }
+
+  public List<SportEventDto> findAllSportEventsByType(String eventType) {
+    return sportEventRepository.findAll().stream()
+        .filter(report -> report.dto().getSportEventType().name().equals(eventType))
+        .map(SportEvent::dto)
+        .collect(Collectors.toList());
   }
 
   public SportEventDto createSportEvent(CreateSportEventDto createSportEvent) {

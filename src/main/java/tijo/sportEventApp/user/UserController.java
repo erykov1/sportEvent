@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tijo.sportEventApp.user.domain.UserFacade;
 import tijo.sportEventApp.user.dto.CreateUserDto;
@@ -21,6 +22,7 @@ class UserController {
     return ResponseEntity.ok(userFacade.createUser(createUser));
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/{username}")
   ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
     return ResponseEntity.ok(userFacade.findByUsername(username));
