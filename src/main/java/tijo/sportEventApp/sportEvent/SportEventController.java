@@ -44,4 +44,22 @@ class SportEventController {
   ResponseEntity<List<SportEventAddressDto>> getAllSportEventsAddresses() {
     return ResponseEntity.ok(sportEventFacade.findAllEventAddresses());
   }
+
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+  @GetMapping("/details/sportEventId")
+  ResponseEntity<SportEventDto> getSportEvent(@PathVariable Long sportEventId) {
+    return ResponseEntity.ok(sportEventFacade.findSportEventById(sportEventId));
+  }
+
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+  @GetMapping("/address/details/sportEventAddressId")
+  ResponseEntity<SportEventAddressDto> getSportEventAddress(@PathVariable Long sportEventAddressId) {
+    return ResponseEntity.ok(sportEventFacade.findSportEventAddressById(sportEventAddressId));
+  }
+
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+  @GetMapping("/eventType")
+  ResponseEntity<List<SportEventDto>> getEventSportByType(@PathVariable String eventType) {
+    return ResponseEntity.ok(sportEventFacade.findAllSportEventsByType(eventType));
+  }
 }
