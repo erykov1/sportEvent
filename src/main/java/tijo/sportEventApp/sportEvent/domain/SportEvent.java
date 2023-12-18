@@ -2,7 +2,9 @@ package tijo.sportEventApp.sportEvent.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import tijo.sportEventApp.sportEvent.dto.SportEventDto;
 
@@ -11,6 +13,8 @@ import java.time.Instant;
 @Entity
 @Table(name = "sport_events")
 @Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class SportEvent {
   @Id

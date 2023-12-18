@@ -20,7 +20,7 @@ public class SportEventApplication {
 	@Bean
 	CommandLineRunner commandLineRunner(UserFacade userFacade) {
 		return args -> {
-			userFacade.createUser(new CreateUserDto("jan123", "janPswd"));
+			userFacade.createAdmin(new CreateUserDto("jan123", "janPswd"));
 		};
 	}
 

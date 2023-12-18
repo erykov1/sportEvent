@@ -58,7 +58,7 @@ class SportEventController {
   }
 
   @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-  @GetMapping("/eventType")
+  @GetMapping("/{eventType}")
   ResponseEntity<List<SportEventDto>> getEventSportByType(@PathVariable String eventType) {
     return ResponseEntity.ok(sportEventFacade.findAllSportEventsByType(eventType));
   }

@@ -27,6 +27,17 @@ public class UserFacade {
     return userRepository.save(saveUser).dto();
   }
 
+  public UserDto createAdmin(CreateUserDto user) {
+    checkIfUserIsAlreadyCreated(user.getUsername());
+    checkIfFieldsAreValid(user);
+    User saveUser = User.builder()
+        .username(user.getUsername())
+        .password(bCryptPasswordEncoder.encode(user.getPassword()))
+        .userRole(UserRole.ADMIN)
+        .build();
+    return userRepository.save(saveUser).dto();
+  }
+
   public UserDto findByUsername(String username) {
     return userRepository.findByUsername(username)
         .map(User::dto)

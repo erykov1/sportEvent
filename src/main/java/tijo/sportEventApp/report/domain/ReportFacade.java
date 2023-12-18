@@ -91,13 +91,13 @@ public class ReportFacade {
   }
 
   @EventListener
-  private SportEventAssignDto onSportEventCreate(SportEventAssignDto sportEventPublish) {
+  void onSportEventCreate(SportEventAssignDto sportEventPublish) {
     SportEventAssign sportEventAssign = SportEventAssign.builder()
         .sportEventId(sportEventPublish.getSportEventId())
         .maxParticipants(sportEventPublish.getMaxParticipants())
         .registrationDeadline(sportEventPublish.getRegistrationDeadline())
         .eventTime(sportEventPublish.getEventTime())
         .build();
-    return sportEventAssignRepository.save(sportEventAssign).dto();
+    sportEventAssignRepository.save(sportEventAssign).dto();
   }
 }
