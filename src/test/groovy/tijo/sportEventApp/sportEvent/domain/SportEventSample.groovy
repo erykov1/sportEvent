@@ -53,8 +53,8 @@ trait SportEventSample {
     def changesWithDefaults = DEFAULT_NEW_SPORT_EVENT_DATA + changes
     CreateSportEventDto.builder()
         .eventName(changesWithDefaults.eventName as String)
-        .eventTime(changesWithDefaults.eventTime as Instant)
-        .registrationDeadline(changesWithDefaults.registrationDeadline as Instant)
+        .eventTime(changesWithDefaults.eventTime as String)
+        .registrationDeadline(changesWithDefaults.registrationDeadline as String)
         .description(changesWithDefaults.description as String)
         .sportEventAddress(changesWithDefaults.eventAddress as Long)
         .maxParticipants(changesWithDefaults.maxParticipants as Long)

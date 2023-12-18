@@ -55,7 +55,7 @@ public class ReportFacade {
     Report declineReport = reportRepository.findByReportId(reportId)
         .orElseThrow(() -> new ReportNotFoundException("Report with such id not found"));
     declineReport = declineReport.toBuilder()
-        .reportStatus(ReportStatus.ACCEPTED)
+        .reportStatus(ReportStatus.DECLINED)
         .build();
     reportRepository.save(declineReport).dto();
     return new UpdateReportDto(reportId, ReportStatus.DECLINED.dto());
