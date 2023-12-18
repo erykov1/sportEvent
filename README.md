@@ -32,6 +32,8 @@ Należy dodać zadanie maven-owe z następujący zmiennymi:
  - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
  - spring.jpa.properties.hibernate.format_sql=true
  - spring.jpa.show-sql=true
+ - rsa.private-key=classpath:certs/private.pem (klucz prywatny HS256)
+ - rsa.public-key=classpath:certs/public.pem (klucz publiczny HS256)
 
 ## Uruchomienie testów jednostkowych
 należy przejść do pakietu test, nacisnąć na niego prawym przyciskiem myszy i kliknąć opcję: "Run 'Tests' in 'groovy'"
