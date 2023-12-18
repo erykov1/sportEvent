@@ -12,7 +12,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "sport_events_assign")
-@Builder()
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)

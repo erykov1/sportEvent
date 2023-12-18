@@ -6,10 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
@@ -97,8 +94,15 @@ class InMemorySportEventAssignRepository implements SportEventAssignRepository {
   }
 
   @Override
-  public <S extends SportEventAssign> S save(S entity) {
-    return null;
+  public SportEventAssign save(SportEventAssign entity) {
+    if (entity.dto().getSportEventId() == null) {
+      Long sportEventId = new Random().nextLong();
+      entity = entity.toBuilder()
+          .sportEventId(sportEventId)
+          .build();
+    }
+    table.put(entity.dto().getSportEventId(), entity);
+    return entity;
   }
 
   @Override

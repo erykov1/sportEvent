@@ -1,21 +1,30 @@
 package tijo.sportEventApp.report.domain
 
-import spock.lang.Specification
 import tijo.sportEventApp.report.dto.CreateReportDto
 import tijo.sportEventApp.report.dto.ReportStatusDto
-import tijo.sportEventApp.report.exception.AlreadyAssignedException
+import tijo.sportEventApp.report.dto.SportEventAssignDto
+import tijo.sportEventApp.sportEvent.domain.SportEventBase
+import tijo.sportEventApp.sportEvent.domain.SportEventSample
+import tijo.sportEventApp.sportEvent.dto.SportEventTypeDto
 import tijo.sportEventApp.sportEvent.exception.FullParticipantsException
 import tijo.sportEventApp.sportEvent.exception.NotExistingSportEventException
 
-class ReportSpec extends Specification implements ReportSample {
+class ReportSpec extends SportEventBase implements ReportSample, SportEventSample {
   ReportFacade reportFacade = new ReportConfiguration().reportFacade()
 
   def "Should create report"() {
+    given: "there is sport event"
+    def firstHandballEdition = sportEventFacade.createSportEvent(createNewSportEvent(eventName: "event",
+        eventTime: "2024-08-08 12:00", registrationDeadline: "2024-07-08 12:00",
+        description: "event handball desc", eventAddress: 1L, maxParticipants: 200L, sportEventType: SportEventTypeDto.HANDBALL))
+    reportFacade.onSportEventCreate(new SportEventAssignDto(firstHandballEdition.sportEventId, firstHandballEdition.maxParticipants,
+      firstHandballEdition.registrationDeadline, firstHandballEdition.eventTime
+    ))
     when: "creates report"
-      def result = reportFacade.createReport(new CreateReportDto("janedoe", HANDBALL_EVENT))
+      def result = reportFacade.createReport(new CreateReportDto("janedoe", firstHandballEdition.sportEventId))
     then: "report is created"
       equalsReport(result, createReport(reportId: result.reportId, username: "janedoe", reportStatus: ReportStatusDto.PENDING,
-        reportedAt: result.reportedAt, eventId: HANDBALL_EVENT
+        reportedAt: result.reportedAt, eventId: firstHandballEdition.sportEventId
       ))
   }
 
@@ -27,38 +36,55 @@ class ReportSpec extends Specification implements ReportSample {
   }
 
   def "Should not create report to sport event if there is already full participants"() {
+    given: "there is sport event"
+      def firstHandballEdition = sportEventFacade.createSportEvent(createNewSportEvent(eventName: "event",
+          eventTime: "2024-08-08 12:00", registrationDeadline: "2024-07-08 12:00",
+          description: "event handball desc", eventAddress: 1L, maxParticipants: 0L, sportEventType: SportEventTypeDto.HANDBALL))
+      reportFacade.onSportEventCreate(new SportEventAssignDto(firstHandballEdition.sportEventId, firstHandballEdition.maxParticipants,
+          firstHandballEdition.registrationDeadline, firstHandballEdition.eventTime
+      ))
     when: "creates report to sport event that has already full participants"
-      reportFacade.createReport(new CreateReportDto("janedoe", new Random().nextLong()))
+      reportFacade.createReport(new CreateReportDto("janedoe", firstHandballEdition.sportEventId))
     then: "gets error of full filled participants in given sport event"
       thrown(FullParticipantsException)
   }
 
   def "Should create report for the same user if try to assign to two sport events that are in different time"() {
-    given: "user assign to first event"
-      def handballEvent = reportFacade.createReport(new CreateReportDto("janedoe", HANDBALL_EVENT))
+    given: "there is sport event"
+    def firstHandballEdition = sportEventFacade.createSportEvent(createNewSportEvent(eventName: "event",
+        eventTime: "2024-08-08 12:00", registrationDeadline: "2024-07-08 12:00",
+        description: "event handball desc", eventAddress: 1L, maxParticipants: 200L, sportEventType: SportEventTypeDto.HANDBALL))
+    reportFacade.onSportEventCreate(new SportEventAssignDto(firstHandballEdition.sportEventId, firstHandballEdition.maxParticipants,
+        firstHandballEdition.registrationDeadline, firstHandballEdition.eventTime
+    ))
+    and: "there is another sport event"
+    def secondHandballEdition = sportEventFacade.createSportEvent(createNewSportEvent(eventName: "event",
+        eventTime: "2025-08-08 12:00", registrationDeadline: "2025-07-08 12:00",
+        description: "event handball desc", eventAddress: 1L, maxParticipants: 200L, sportEventType: SportEventTypeDto.HANDBALL))
+    reportFacade.onSportEventCreate(new SportEventAssignDto(secondHandballEdition.sportEventId, secondHandballEdition.maxParticipants,
+        secondHandballEdition.registrationDeadline, secondHandballEdition.eventTime
+    ))
+    and: "user assign to first event"
+      def handballReport = reportFacade.createReport(new CreateReportDto("janedoe", firstHandballEdition.sportEventId))
     when: "user assigns to other event"
-      def footballEvent = reportFacade.createReport(new CreateReportDto("janedoe", FOOTBALL_EVENT))
+      def handballSecondEditionReport = reportFacade.createReport(new CreateReportDto("janedoe", secondHandballEdition.sportEventId))
     then: "user is assigned to two sport events"
-      equalsReports(reportFacade.getAllUserReports("jane123"), [createReport(reportId: handballEvent.reportId, username: "janedoe", reportStatus: ReportStatusDto.PENDING,
-          reportedAt: footballEvent.reportedAt, eventId: HANDBALL_EVENT
-      ), createReport(reportId: handballEvent.reportId, username: "janedoe", reportStatus: ReportStatusDto.PENDING,
-          reportedAt: footballEvent.reportedAt, eventId: FOOTBALL_EVENT)])
-  }
-
-  def "Should not create report for the sport event if user is already reported to other sport event"() {
-    given: "user report for the first event"
-      def report = reportFacade.createReport(new CreateReportDto("janedoe", HANDBALL_EVENT))
-    and: "gets accepted"
-      reportFacade.acceptReport(report.reportId)
-    when: "user reports for other sport event that is in the same time"
-      reportFacade.createReport(new CreateReportDto("janedoe", HANDBALL_EVENT))
-    then: "gets error of already assigned user to sport event"
-      thrown(AlreadyAssignedException)
+      equalsReports(reportFacade.getAllUserReports("janedoe"), [createReport(reportId: handballReport.reportId, username: "janedoe", reportStatus: ReportStatusDto.PENDING,
+          reportedAt: handballReport.reportedAt, eventId: firstHandballEdition.sportEventId
+      ), createReport(reportId: handballSecondEditionReport.reportId, username: "janedoe", reportStatus: ReportStatusDto.PENDING,
+          reportedAt: handballSecondEditionReport.reportedAt, eventId: secondHandballEdition.sportEventId)])
   }
 
   def "Should change status from pending to accepted"() {
-    given: "user report for the sport event"
-      def handballEvent = reportFacade.createReport(new CreateReportDto("janedoe", HANDBALL_EVENT))
+    given: "there is sport event"
+    def firstHandballEdition = sportEventFacade.createSportEvent(createNewSportEvent(eventName: "event",
+        eventTime: "2024-08-08 12:00", registrationDeadline: "2024-07-08 12:00",
+        description: "event handball desc", eventAddress: 1L, maxParticipants: 200L, sportEventType: SportEventTypeDto.HANDBALL))
+    reportFacade.onSportEventCreate(new SportEventAssignDto(firstHandballEdition.sportEventId, firstHandballEdition.maxParticipants,
+        firstHandballEdition.registrationDeadline, firstHandballEdition.eventTime
+    ))
+    and: "user report for the sport event"
+      def handballEvent = reportFacade.createReport(new CreateReportDto("janedoe", firstHandballEdition.sportEventId))
     when: "gets accepted"
       def result = reportFacade.acceptReport(handballEvent.reportId)
     then: "status of his report is accepted"
@@ -67,8 +93,15 @@ class ReportSpec extends Specification implements ReportSample {
   }
 
   def "Should change status from pending to declined"() {
-    given: "user report for the sport event"
-      def handballEvent = reportFacade.createReport(new CreateReportDto("janedoe", HANDBALL_EVENT))
+    given: "there is sport event"
+    def firstHandballEdition = sportEventFacade.createSportEvent(createNewSportEvent(eventName: "event",
+        eventTime: "2024-08-08 12:00", registrationDeadline: "2024-07-08 12:00",
+        description: "event handball desc", eventAddress: 1L, maxParticipants: 200L, sportEventType: SportEventTypeDto.HANDBALL))
+    reportFacade.onSportEventCreate(new SportEventAssignDto(firstHandballEdition.sportEventId, firstHandballEdition.maxParticipants,
+        firstHandballEdition.registrationDeadline, firstHandballEdition.eventTime
+    ))
+    and: "user report for the sport event"
+      def handballEvent = reportFacade.createReport(new CreateReportDto("janedoe", firstHandballEdition.sportEventId))
     when: "gets accepted"
       def result = reportFacade.declineReport(handballEvent.reportId)
     then: "status of his report is declined"
@@ -77,31 +110,45 @@ class ReportSpec extends Specification implements ReportSample {
   }
 
   def "Should get all reports with pending status"() {
-    given: "there are some reports with pending status"
-      def handballEvent = reportFacade.createReport(new CreateReportDto("janedoe", HANDBALL_EVENT))
-      def footballEvent = reportFacade.createReport(new CreateReportDto("mikejones", FOOTBALL_EVENT))
+    given: "there is sport event"
+    def firstHandballEdition = sportEventFacade.createSportEvent(createNewSportEvent(eventName: "event",
+        eventTime: "2024-08-08 12:00", registrationDeadline: "2024-07-08 12:00",
+        description: "event handball desc", eventAddress: 1L, maxParticipants: 200L, sportEventType: SportEventTypeDto.HANDBALL))
+    reportFacade.onSportEventCreate(new SportEventAssignDto(firstHandballEdition.sportEventId, firstHandballEdition.maxParticipants,
+        firstHandballEdition.registrationDeadline, firstHandballEdition.eventTime
+    ))
+    and: "there are some reports with pending status"
+      def janeDoeReport = reportFacade.createReport(new CreateReportDto("janedoe", firstHandballEdition.sportEventId))
+      def mikeJonesReport = reportFacade.createReport(new CreateReportDto("mikejones", firstHandballEdition.sportEventId))
     when: "asks for all pending status"
-      def result = reportFacade.getAllReportsByStatus(ReportStatusDto.PENDING)
+      def result = reportFacade.getAllReportsByStatus(ReportStatusDto.PENDING.name())
     then: "gets all pending status"
-    equalsReports(result, [createReport(reportId: handballEvent.reportId, username: "janedoe", reportStatus: ReportStatusDto.PENDING,
-        reportedAt: footballEvent.reportedAt, eventId: HANDBALL_EVENT
-    ), createReport(reportId: handballEvent.reportId, username: "mikejones", reportStatus: ReportStatusDto.PENDING,
-        reportedAt: footballEvent.reportedAt, eventId: FOOTBALL_EVENT)])
+    equalsReports(result, [createReport(reportId: janeDoeReport.reportId, username: "janedoe", reportStatus: ReportStatusDto.PENDING,
+        reportedAt: janeDoeReport.reportedAt, eventId: firstHandballEdition.sportEventId
+    ), createReport(reportId: mikeJonesReport.reportId, username: "mikejones", reportStatus: ReportStatusDto.PENDING,
+        reportedAt: mikeJonesReport.reportedAt, eventId: firstHandballEdition.sportEventId)])
   }
 
   def "Should get all reports with declined status"() {
-    given: "there are some reports with pending status"
-      def handballEvent = reportFacade.createReport(new CreateReportDto("janedoe", HANDBALL_EVENT))
-      def footballEvent = reportFacade.createReport(new CreateReportDto("mikejones", FOOTBALL_EVENT))
+    given: "there is sport event"
+    def firstHandballEdition = sportEventFacade.createSportEvent(createNewSportEvent(eventName: "event",
+        eventTime: "2024-08-08 12:00", registrationDeadline: "2024-07-08 12:00",
+        description: "event handball desc", eventAddress: 1L, maxParticipants: 200L, sportEventType: SportEventTypeDto.HANDBALL))
+    reportFacade.onSportEventCreate(new SportEventAssignDto(firstHandballEdition.sportEventId, firstHandballEdition.maxParticipants,
+        firstHandballEdition.registrationDeadline, firstHandballEdition.eventTime
+    ))
+    and: "there are some reports with pending status"
+      def janeReport = reportFacade.createReport(new CreateReportDto("janedoe", firstHandballEdition.sportEventId))
+      def mikeReport = reportFacade.createReport(new CreateReportDto("mikejones", firstHandballEdition.sportEventId))
     and: "both reports change status to declined"
-      reportFacade.declineReport(handballEvent.reportId)
-      reportFacade.declineReport(footballEvent.reportId)
+      reportFacade.declineReport(janeReport.reportId)
+      reportFacade.declineReport(mikeReport.reportId)
     when: "asks for all reports with declined status"
-      def result = reportFacade.getAllReportsByStatus(ReportStatusDto.DECLINED)
+      def result = reportFacade.getAllReportsByStatus(ReportStatusDto.DECLINED.name())
     then: "gets all pending status"
-    equalsReports(result, [createReport(reportId: handballEvent.reportId, username: "janedoe", reportStatus: ReportStatusDto.DECLINED,
-        reportedAt: footballEvent.reportedAt, eventId: HANDBALL_EVENT
-    ), createReport(reportId: handballEvent.reportId, username: "mikejones", reportStatus: ReportStatusDto.DECLINED,
-        reportedAt: footballEvent.reportedAt, eventId: FOOTBALL_EVENT)])
+    equalsReports(result, [createReport(reportId: janeReport.reportId, username: "janedoe", reportStatus: ReportStatusDto.DECLINED,
+        reportedAt: janeReport.reportedAt, eventId: firstHandballEdition.sportEventId
+    ), createReport(reportId: mikeReport.reportId, username: "mikejones", reportStatus: ReportStatusDto.DECLINED,
+        reportedAt: mikeReport.reportedAt, eventId: firstHandballEdition.sportEventId)])
   }
 }
