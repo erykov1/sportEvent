@@ -81,7 +81,7 @@ public class ReportFacade {
   private void checkIfReachMaxParticipant(Long sportEventId, Long currentParticipantNumber) {
     SportEventAssign sportEventAssign = sportEventAssignRepository.findSportEventBySportEventId(sportEventId)
         .orElseThrow(() -> new NotExistingSportEventException("Sport event does not exist"));
-    if(sportEventAssign.dto().getMaxParticipants() >= currentParticipantNumber) {
+    if(sportEventAssign.dto().getMaxParticipants() <= currentParticipantNumber) {
       throw new FullParticipantsException("There are already full participants");
     }
   }
