@@ -51,4 +51,10 @@ class ReportController {
   ResponseEntity<List<ReportDto>> findReports() {
     return ResponseEntity.ok(reportFacade.findAllReports());
   }
+
+  @GetMapping("/all/{username}")
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+  ResponseEntity<List<ReportDto>> findUserReports(@PathVariable String username) {
+    return ResponseEntity.ok(reportFacade.getAllUserReports(username));
+  }
 }

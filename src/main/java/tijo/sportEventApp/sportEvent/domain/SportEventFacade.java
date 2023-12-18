@@ -61,8 +61,8 @@ public class SportEventFacade {
     checkIfAlreadyReserved(createSportEvent);
     SportEvent sportEvent = SportEvent.builder()
             .eventName(createSportEvent.getEventName())
-            .eventTime(createSportEvent.getEventTime())
-            .registrationDeadline(createSportEvent.getRegistrationDeadline())
+            .eventTime(InstantProvider.fromFormatted(createSportEvent.getEventTime()))
+            .registrationDeadline(InstantProvider.fromFormatted(createSportEvent.getRegistrationDeadline()))
             .description(createSportEvent.getDescription())
             .maxParticipants(createSportEvent.getMaxParticipants())
             .sportEventType(SportEventType.valueOf(createSportEvent.getSportEventType().name()))
@@ -80,7 +80,7 @@ public class SportEventFacade {
   }
   private void checkIfAlreadyReserved(CreateSportEventDto createSportEvent) {
     if (sportEventRepository.findBySportEventAddressAndEventTime(createSportEvent.getSportEventAddress(),
-            createSportEvent.getEventTime()).isPresent()) {
+            InstantProvider.fromFormatted(createSportEvent.getEventTime())).isPresent()) {
       throw new AlreadyReservedAddressException("Address has been already reserved");
     }
   }

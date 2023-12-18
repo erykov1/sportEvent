@@ -7,15 +7,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
-import java.time.Instant;
-
 @Getter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CreateSportEventDto {
   String eventName;
-  Instant eventTime;
-  Instant registrationDeadline;
+  String eventTime;
+  String registrationDeadline;
   String description;
   Long maxParticipants;
   @Enumerated(EnumType.STRING)
