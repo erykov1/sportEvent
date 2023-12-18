@@ -5,10 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -97,8 +95,9 @@ class InMemoryReportRepository implements ReportRepository {
   }
 
   @Override
-  public <S extends Report> S save(S entity) {
-    return null;
+  public Report save(Report entity) {
+    table.put(entity.dto().getReportId(), entity);
+    return entity;
   }
 
   @Override
@@ -118,7 +117,7 @@ class InMemoryReportRepository implements ReportRepository {
 
   @Override
   public List<Report> findAll() {
-    return null;
+    return new ArrayList<>(table.values());
   }
 
   @Override
