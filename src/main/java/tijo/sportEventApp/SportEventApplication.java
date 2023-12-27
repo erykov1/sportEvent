@@ -16,12 +16,4 @@ public class SportEventApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SportEventApplication.class, args);
 	}
-
-	@Bean
-	CommandLineRunner commandLineRunner(UserFacade userFacade) {
-		return args -> {
-			userFacade.createAdmin(new CreateUserDto("jan123", "janPswd"));
-		};
-	}
-
 }

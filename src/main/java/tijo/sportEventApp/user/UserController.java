@@ -2,6 +2,7 @@ package tijo.sportEventApp.user;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +14,8 @@ import tijo.sportEventApp.user.dto.UserDto;
 @RestController
 @RequestMapping("/api/user")
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 class UserController {
   UserFacade userFacade;
 

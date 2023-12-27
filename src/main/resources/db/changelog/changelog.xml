@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="1" author="e.marnik">
+        <sqlFile path="db/changelog/sql/change-001-EM.sql" splitStatements="true" endDelimiter=";" stripComments="true" />
+        <comment>dodanie tabel reports, sport_events_assign, sport_events, sport_events_addresses, users</comment>
+    </changeSet>
+    <changeSet id="2" author="e.marnik">
+        <createSequence sequenceName="users_sequence" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="3" author="e.marnik">
+        <createSequence sequenceName="sport_event_sequence" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="4" author="e.marnik">
+        <createSequence sequenceName="sport_event_address_sequence" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="5" author="e.marnik">
+        <createSequence sequenceName="sport_event_assign_sequence" incrementBy="1" startValue="1"/>
+    </changeSet>
+</databaseChangeLog>

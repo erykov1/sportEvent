@@ -16,10 +16,12 @@ import tijo.sportEventApp.user.dto.UserDto;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class User {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
+  @SequenceGenerator(name = "user_sequence", sequenceName = "users_sequence", allocationSize = 1)
   Long userId;
   String username;
   String password;
+  @Enumerated(EnumType.STRING)
   UserRole userRole;
 
   UserDto dto() {

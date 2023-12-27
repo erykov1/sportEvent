@@ -2,6 +2,7 @@ package tijo.sportEventApp.sportEvent;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +18,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/sportEvent")
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 class SportEventController {
   SportEventFacade sportEventFacade;
 

@@ -18,7 +18,8 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class SportEventAssign {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sport_event_assign_sequence")
+  @SequenceGenerator(name = "sport_event_assign_sequence", sequenceName = "sport_event_assign_sequence", allocationSize = 1)
   Long sportEventId;
   Long maxParticipants;
   Instant registrationDeadline;
