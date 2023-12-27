@@ -1,9 +1,11 @@
 package tijo.sportEventApp.sportEvent;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +19,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/sportEvent")
-@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class SportEventController {
   SportEventFacade sportEventFacade;
+
+  @Autowired
+  SportEventController(SportEventFacade sportEventFacade) {
+    this.sportEventFacade = sportEventFacade;
+  }
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/address/create")
@@ -63,5 +69,12 @@ class SportEventController {
   @GetMapping("/{eventType}")
   ResponseEntity<List<SportEventDto>> getEventSportByType(@PathVariable String eventType) {
     return ResponseEntity.ok(sportEventFacade.findAllSportEventsByType(eventType));
+  }
+
+  @GetMapping("/cleanup")
+  @Hidden
+  ResponseEntity<String> cleanup() {
+    sportEventFacade.cleanup();
+    return ResponseEntity.ok("sport event cleanup");
   }
 }

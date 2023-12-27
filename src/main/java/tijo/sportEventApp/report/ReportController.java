@@ -1,5 +1,6 @@
 package tijo.sportEventApp.report;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -48,9 +49,9 @@ class ReportController {
 
   @DeleteMapping("/delete/{reportId}")
   @PreAuthorize("hasRole('ADMIN')")
-  ResponseEntity<String> deleteReport(@PathVariable UUID reportId) {
+  ResponseEntity<Void> deleteReport(@PathVariable UUID reportId) {
     reportFacade.deleteReport(reportId);
-    return ResponseEntity.ok("Deleted report with id : " + reportId);
+    return ResponseEntity.ok().build();
   }
 
   @GetMapping("/all")
@@ -63,5 +64,12 @@ class ReportController {
   @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
   ResponseEntity<List<ReportDto>> findUserReports(@PathVariable String username) {
     return ResponseEntity.ok(reportFacade.getAllUserReports(username));
+  }
+
+  @GetMapping("/cleanup")
+  @Hidden
+  ResponseEntity<String> cleanup() {
+    reportFacade.cleanup();
+    return ResponseEntity.ok("report cleanup");
   }
 }

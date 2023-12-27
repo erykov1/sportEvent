@@ -1,6 +1,7 @@
 package tijo.sportEventApp.sportEvent.domain;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.experimental.FieldDefaults;
 import tijo.sportEventApp.report.dto.SportEventAssignDto;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Builder
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SportEventFacade {
   SportEventRepository sportEventRepository;
@@ -72,12 +74,12 @@ public class SportEventFacade {
     return sportEventRepository.save(sportEvent).dto();
   }
 
-
   public List<SportEventDto> findAllSportEvents() {
     return sportEventRepository.findAll().stream()
             .map(SportEvent::dto)
             .collect(Collectors.toList());
   }
+
   private void checkIfAlreadyReserved(CreateSportEventDto createSportEvent) {
     if (sportEventRepository.findBySportEventAddressAndEventTime(createSportEvent.getSportEventAddress(),
             InstantProvider.fromFormatted(createSportEvent.getEventTime())).isPresent()) {
@@ -93,5 +95,10 @@ public class SportEventFacade {
         .eventTime(sportEvent.dto().getEventTime())
         .build();
     sportEventPublisher.notifySportEventCreated(sportEventPublish);
+  }
+
+  public void cleanup() {
+    sportEventRepository.deleteAll();
+    sportEventAddressRepository.deleteAll();
   }
 }

@@ -66,6 +66,11 @@ class SportEventAppApi {
       UserDto value = mapper.readValue(perform.andReturn().response.getContentAsString(StandardCharsets.UTF_8), mapper.getTypeFactory().constructType(UserDto.class))
       value
     }
+
+    void cleanup() {
+      ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/api/user/cleanup"))
+      checkResponse(perform.andReturn().response)
+    }
   }
 
   class ReportApi {
@@ -110,15 +115,12 @@ class SportEventAppApi {
       value
     }
 
-    String deleteReport(UUID reportId) {
+    void deleteReport(UUID reportId) {
       ResultActions perform = mvc.perform(MockMvcRequestBuilders.delete("/api/report/delete/{reportId}", reportId)
           .contentType(MediaType.APPLICATION_JSON)
           .content(mapper.writeValueAsString(reportId))
       )
       checkResponse(perform.andReturn().response)
-      String value = mapper.readValue(perform.andReturn().response.getContentAsString(StandardCharsets.UTF_8),
-          mapper.getTypeFactory().constructType(String.class))
-      value
     }
 
     List<ReportDto> findReports() {
@@ -127,6 +129,11 @@ class SportEventAppApi {
       List<ReportDto> value = mapper.readValue(perform.andReturn().response.getContentAsString(StandardCharsets.UTF_8),
           mapper.getTypeFactory().constructCollectionType(List.class, ReportDto.class))
       value
+    }
+
+    void cleanup() {
+      ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/api/report/cleanup"))
+      checkResponse(perform.andReturn().response)
     }
   }
 
@@ -175,6 +182,11 @@ class SportEventAppApi {
       List<SportEventAddressDto> value = mapper.readValue(perform.andReturn().response.getContentAsString(StandardCharsets.UTF_8),
           mapper.getTypeFactory().constructCollectionType(List.class, SportEventAddressDto.class))
       value
+    }
+
+    void cleanup() {
+      ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/api/sportEvent/cleanup"))
+      checkResponse(perform.andReturn().response)
     }
   }
 
