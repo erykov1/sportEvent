@@ -18,7 +18,8 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class SportEvent {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sport_event_sequence")
+  @SequenceGenerator(name = "sport_event_sequence", sequenceName = "sport_event_sequence", allocationSize = 1)
   Long sportEventId;
   String eventName;
   Instant eventTime;

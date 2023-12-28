@@ -100,4 +100,9 @@ public class ReportFacade {
         .build();
     sportEventAssignRepository.save(sportEventAssign).dto();
   }
+
+  public void cleanup() {
+    sportEventAssignRepository.deleteAll();
+    reportRepository.deleteAll();
+  }
 }

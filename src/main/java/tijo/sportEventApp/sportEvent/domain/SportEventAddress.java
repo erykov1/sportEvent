@@ -16,7 +16,8 @@ import tijo.sportEventApp.sportEvent.dto.SportEventAddressDto;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class SportEventAddress {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sport_event_address_sequence")
+  @SequenceGenerator(name = "sport_event_address_sequence", sequenceName = "sport_event_address_sequence", allocationSize = 1)
   Long eventAddressId;
   String postalCode;
   String city;

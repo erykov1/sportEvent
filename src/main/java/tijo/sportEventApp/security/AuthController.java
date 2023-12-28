@@ -2,6 +2,7 @@ package tijo.sportEventApp.security;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,8 @@ import tijo.sportEventApp.user.dto.UserDto;
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 class AuthController {
   TokenService tokenService;
   AuthenticationManager authenticationManager;
