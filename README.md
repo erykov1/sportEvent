@@ -28,12 +28,11 @@ Należy dodać zadanie maven-owe z następujący zmiennymi:
  - spring.datasource.password=<hasło>
  - spring.datasource.url=jdbc:postgresql://localhost:5432/<nazwa_bazy>
  - spring.datasource.username=<nazwa_użytkownika>
- - spring.jpa.hibernate.ddl-auto=create-drop lub update
+ - spring.datasource.driver-class-name=org.postgresql.Driver
  - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
- - spring.jpa.properties.hibernate.format_sql=true
- - spring.jpa.show-sql=true
  - rsa.private-key=classpath:certs/private.pem (klucz prywatny HS256)
  - rsa.public-key=classpath:certs/public.pem (klucz publiczny HS256)
+ - spring.liquibase.change-log=classpath:/db/changelog/changelog.xml
 
 ## Uruchomienie testów jednostkowych
 należy przejść do pakietu test, nacisnąć na niego prawym przyciskiem myszy i kliknąć opcję: "Run 'Tests' in 'groovy'"
