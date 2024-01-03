@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +29,13 @@ class AuthController {
   PasswordEncoder passwordEncoder;
   UserFacade userFacade;
 
+  @Autowired
+  public AuthController(TokenService tokenService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, UserFacade userFacade) {
+    this.tokenService = tokenService;
+    this.authenticationManager = authenticationManager;
+    this.passwordEncoder = passwordEncoder;
+    this.userFacade = userFacade;
+  }
   @PostMapping("/token")
   ResponseEntity<String> generateToken(@RequestBody LoginRequest loginRequest) {
     UserDto user = userFacade.findByUsername(loginRequest.getUsername());
