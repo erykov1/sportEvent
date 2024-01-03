@@ -57,7 +57,7 @@ trait ReportSample {
   }
 
   void equalsReports(List<ReportDto> result, List<ReportDto> expected) {
-    def comparator = Comparator.comparing(ReportDto::getUsername)
+    def comparator = Comparator.comparing(ReportDto::getReportedAt)
     result.sort(comparator)
     assert result.reportId == expected.reportId
     assert result.username == expected.username

@@ -20,7 +20,6 @@ import tijo.sportEventApp.user.dto.UserDto;
 
 @RestController
 @RequestMapping("/api/auth")
-@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class AuthController {
@@ -36,6 +35,7 @@ class AuthController {
     this.passwordEncoder = passwordEncoder;
     this.userFacade = userFacade;
   }
+
   @PostMapping("/token")
   ResponseEntity<String> generateToken(@RequestBody LoginRequest loginRequest) {
     UserDto user = userFacade.findByUsername(loginRequest.getUsername());
