@@ -51,22 +51,23 @@ class ReportSpec extends SportEventBase implements ReportSample, SportEventSampl
 
   def "Should create report for the same user if try to assign to two sport events that are in different time"() {
     given: "there is sport event"
-    def firstHandballEdition = sportEventFacade.createSportEvent(createNewSportEvent(eventName: "event",
-        eventTime: "2024-08-08 12:00", registrationDeadline: "2024-07-08 12:00",
-        description: "event handball desc", eventAddress: 1L, maxParticipants: 200L, sportEventType: SportEventTypeDto.HANDBALL))
-    reportFacade.onSportEventCreate(new SportEventAssignDto(firstHandballEdition.sportEventId, firstHandballEdition.maxParticipants,
-        firstHandballEdition.registrationDeadline, firstHandballEdition.eventTime
-    ))
+      def firstHandballEdition = sportEventFacade.createSportEvent(createNewSportEvent(eventName: "event",
+          eventTime: "2024-08-08 12:00", registrationDeadline: "2024-07-08 12:00",
+          description: "event handball desc", eventAddress: 1L, maxParticipants: 200L, sportEventType: SportEventTypeDto.HANDBALL))
+      reportFacade.onSportEventCreate(new SportEventAssignDto(firstHandballEdition.sportEventId, firstHandballEdition.maxParticipants,
+          firstHandballEdition.registrationDeadline, firstHandballEdition.eventTime
+      ))
     and: "there is another sport event"
-    def secondHandballEdition = sportEventFacade.createSportEvent(createNewSportEvent(eventName: "event",
-        eventTime: "2025-08-08 12:00", registrationDeadline: "2025-07-08 12:00",
-        description: "event handball desc", eventAddress: 1L, maxParticipants: 200L, sportEventType: SportEventTypeDto.HANDBALL))
-    reportFacade.onSportEventCreate(new SportEventAssignDto(secondHandballEdition.sportEventId, secondHandballEdition.maxParticipants,
-        secondHandballEdition.registrationDeadline, secondHandballEdition.eventTime
-    ))
+      def secondHandballEdition = sportEventFacade.createSportEvent(createNewSportEvent(eventName: "event",
+          eventTime: "2025-08-08 12:00", registrationDeadline: "2025-07-08 12:00",
+          description: "event handball desc", eventAddress: 1L, maxParticipants: 200L, sportEventType: SportEventTypeDto.HANDBALL))
+      reportFacade.onSportEventCreate(new SportEventAssignDto(secondHandballEdition.sportEventId, secondHandballEdition.maxParticipants,
+          secondHandballEdition.registrationDeadline, secondHandballEdition.eventTime
+      ))
     and: "user assign to first event"
       def handballReport = reportFacade.createReport(new CreateReportDto("janedoe", firstHandballEdition.sportEventId))
     when: "user assigns to other event"
+      instantProvider.useFixedClock(instantProvider.now().plusMillis(3l))
       def handballSecondEditionReport = reportFacade.createReport(new CreateReportDto("janedoe", secondHandballEdition.sportEventId))
     then: "user is assigned to two sport events"
       equalsReports(reportFacade.getAllUserReports("janedoe"), [createReport(reportId: handballReport.reportId, username: "janedoe", reportStatus: ReportStatusDto.PENDING,
@@ -117,8 +118,10 @@ class ReportSpec extends SportEventBase implements ReportSample, SportEventSampl
     reportFacade.onSportEventCreate(new SportEventAssignDto(firstHandballEdition.sportEventId, firstHandballEdition.maxParticipants,
         firstHandballEdition.registrationDeadline, firstHandballEdition.eventTime
     ))
-    and: "there are some reports with pending status"
+    and: "user janedoe creates report"
       def janeDoeReport = reportFacade.createReport(new CreateReportDto("janedoe", firstHandballEdition.sportEventId))
+    and: "user mikejones creates report"
+      instantProvider.useFixedClock(instantProvider.now().plusMillis(3l))
       def mikeJonesReport = reportFacade.createReport(new CreateReportDto("mikejones", firstHandballEdition.sportEventId))
     when: "asks for all pending status"
       def result = reportFacade.getAllReportsByStatus(ReportStatusDto.PENDING.name())
@@ -137,11 +140,14 @@ class ReportSpec extends SportEventBase implements ReportSample, SportEventSampl
     reportFacade.onSportEventCreate(new SportEventAssignDto(firstHandballEdition.sportEventId, firstHandballEdition.maxParticipants,
         firstHandballEdition.registrationDeadline, firstHandballEdition.eventTime
     ))
-    and: "there are some reports with pending status"
+    and: "user janedoe creates report"
       def janeReport = reportFacade.createReport(new CreateReportDto("janedoe", firstHandballEdition.sportEventId))
+    and: "user mikejones creates report"
+      instantProvider.useFixedClock(instantProvider.now().plusMillis(3l))
       def mikeReport = reportFacade.createReport(new CreateReportDto("mikejones", firstHandballEdition.sportEventId))
-    and: "both reports change status to declined"
+    and: "janedoe report change status to declined"
       reportFacade.declineReport(janeReport.reportId)
+    and: "mikejonse report change status to declined"
       reportFacade.declineReport(mikeReport.reportId)
     when: "asks for all reports with declined status"
       def result = reportFacade.getAllReportsByStatus(ReportStatusDto.DECLINED.name())
