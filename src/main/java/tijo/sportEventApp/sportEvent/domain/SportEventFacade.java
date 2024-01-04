@@ -10,6 +10,7 @@ import tijo.sportEventApp.sportEvent.exception.AlreadyReservedAddressException;
 import tijo.sportEventApp.sportEvent.exception.NotExistingSportEventException;
 import tijo.sportEventApp.utils.InstantProvider;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Builder
@@ -18,22 +19,22 @@ import java.util.stream.Collectors;
 public class SportEventFacade {
   SportEventRepository sportEventRepository;
   SportEventAddressRepository sportEventAddressRepository;
-  InstantProvider instantProvider;
   SportEventPublisher sportEventPublisher;
 
   public SportEventAddressDto createEventAddress(CreateSportEventAddressDto createSportEventAddress) {
-    if (sportEventAddressRepository.findSportEventAddressByDetails(createSportEventAddress.getPostalCode(),
-            createSportEventAddress.getCity(), createSportEventAddress.getStreet(), createSportEventAddress.getStreetNumber()
-    ).isPresent()) {
-      return SportEventAddressDto.builder().build();
+    Optional<SportEventAddress> address = sportEventAddressRepository.findSportEventAddressByDetails(createSportEventAddress.getPostalCode(),
+        createSportEventAddress.getCity(), createSportEventAddress.getStreet(), createSportEventAddress.getStreetNumber());
+    if (address.isPresent()) {
+      return address.get().dto();
+    } else {
+      SportEventAddress sportEventAddressSave = SportEventAddress.builder()
+          .postalCode(createSportEventAddress.getPostalCode())
+          .city(createSportEventAddress.getCity())
+          .street(createSportEventAddress.getStreet())
+          .streetNumber(createSportEventAddress.getStreetNumber())
+          .build();
+      return sportEventAddressRepository.save(sportEventAddressSave).dto();
     }
-    SportEventAddress sportEventAddressSave = SportEventAddress.builder()
-            .postalCode(createSportEventAddress.getPostalCode())
-            .city(createSportEventAddress.getCity())
-            .street(createSportEventAddress.getStreet())
-            .streetNumber(createSportEventAddress.getStreetNumber())
-            .build();
-    return sportEventAddressRepository.save(sportEventAddressSave).dto();
   }
 
   public List<SportEventAddressDto> findAllEventAddresses() {

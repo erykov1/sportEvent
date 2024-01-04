@@ -9,8 +9,6 @@ import java.time.Instant
 
 trait ReportSample {
   static final Long HANDBALL_EVENT = 1L
-  static final Long FOOTBALL_EVENT = 2L
-  static final Long FULL_PARTICIPANTS_EVENT = 3L
 
   private Map<String, Object> DEFAULT_REPORT_DATA = [
       reportId: "",

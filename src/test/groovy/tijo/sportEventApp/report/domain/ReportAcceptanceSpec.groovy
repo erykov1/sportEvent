@@ -7,6 +7,7 @@ import tijo.sportEventApp.sportEvent.domain.SportEventSample
 import tijo.sportEventApp.sportEvent.dto.SportEventTypeDto
 
 class ReportAcceptanceSpec extends IntegrationSpec implements ReportSample, SportEventSample {
+
   def "Should create new report"() {
     given: "there is sport event"
       def handballEdition = api.sportEvent().createSportEvent(createNewSportEvent(eventName: "event",
