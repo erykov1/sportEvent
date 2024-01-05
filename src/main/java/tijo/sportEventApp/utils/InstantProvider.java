@@ -1,7 +1,6 @@
 package tijo.sportEventApp.utils;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.*;
