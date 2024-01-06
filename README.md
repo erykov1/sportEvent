@@ -59,7 +59,7 @@ należy przejść do pakietu test, nacisnąć na niego prawym przyciskiem myszy 
 | TC-017       | Przeglądanie szczegółów wydarzeń | Zaloguj się jako użytkownik, przejdź do zakładki 'Typy wydarzeń', wybierz jeden z typów, wybierz wydarzenie | Pojawią się szczegóły wydarzenia |
 | TC-018       | Przeglądanie dostępnych typów wydarzeń | Zaloguj się jako użytkownik, przejdź do zakładki 'Typy wydarzeń' | Pojawią się wszystkie dostępne typy wydarzeń |
 | TC-019       | Próba przejścia do ścieżki, która nie jest zdefiniowana | Wpisz ścieżkę, która nie jest zdefiniowana | Nastąpi przekierowanie na stronę główną |
-| TC-020       | Zmiana wyglądu navbar po zalogowaniu się | Zaloguj się jako użytkownik | wygląd paska oraz jego zakładki zmienią się wg roli użytkownika |
+| TC-020       | Zmiana wyglądu navbar po zalogowaniu się | Zaloguj się | wygląd paska oraz jego zakładki zmienią się wg roli użytkownika |
 
 ## Technologie użyte w projekcie
 - Java 17,
