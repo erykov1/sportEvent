@@ -184,6 +184,15 @@ class SportEventAppApi {
       value
     }
 
+    List<SportEventDto> getAllSportEventsByType(String eventType) {
+      ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/api/sportEvent/{eventType}", eventType))
+      checkResponse(perform.andReturn().response)
+      List<SportEventDto> value = mapper.readValue(perform.andReturn().response.getContentAsString(StandardCharsets.UTF_8),
+        mapper.getTypeFactory().constructCollectionType(List.class, SportEventDto.class)
+      )
+      value
+    }
+
     void cleanup() {
       ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/api/sportEvent/cleanup"))
       checkResponse(perform.andReturn().response)
