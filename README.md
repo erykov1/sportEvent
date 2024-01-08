@@ -8,20 +8,11 @@
 ## Aplikacja do organizacji wydarzeń sportowych
 
 # Opis projektu
-"Aplikacja do Organizacji Wydarzeń Sportowych" to wszechstronne
-narzędzie stworzone z myślą o zapewnieniu kompleksowego wsparcia
-organizatorowi eventów sportowych. Dzięki zestawowi zaawansowanych funkcji,
-ułatwia planowanie, zarządzanie wydarzeniami sportowymi. Oto główne
-aspekty tej aplikacji: Rejestracja Uczestników: Aplikacja umożliwia łatwą rejestrację
-uczestników. Uczestnicy mogą dokonywać rejestracji online, dostarczając
-niezbędne informacje. Tworzenie i Zarządzanie Wydarzeniami: Organizator może
-tworzyć nowe wydarzenia sportowe, określając daty, miejsce, opis, kategorie.
-System pozwala również na monitorowanie dostępności miejsc oraz śledzenie liczby
-zarejestrowanych uczestników. Zarządzanie Uczestnikami: Aplikacja oferuje
-narzędzia do zarządzania uczestnikami, takie jak tworzenie listy uczestników.
-Zarządzanie Harmonogramem: Aplikacja umożliwia tworzenie i zarządzanie
-harmonogramem wydarzenia, dzięki czemu uczestnicy mają dostęp do
-informacji na temat danego wydarzenia.
+"Aplikacja do Organizacji Wydarzeń Sportowych" pozwala na rejestrację oraz logowanie do systemu.
+Użytkownicy zalogowani mogą przeglądać dostępne wydarzenia sportowe i zgłaszać w nich chęć uczestnictwa.
+Dodatkowo mogą przeglądać własne zgłoszenia oraz filtrować je po statusie. W przypadku zgłoszenia, które
+nie jest zaakcpetowane przez administratora, można je usunąć. Administrator może dodawać nowe wydarzenia sportowe
+oraz adresy do nich. Dodatkowo może przeglądać zgłoszenia użytkowników, a następnie odrzucać lub je akceptować.
 
 - Strona główna
 ![image](https://github.com/erykov1/sportEvent/assets/62502523/ab9375c4-1b34-4ce2-b074-03eba07c0753)
