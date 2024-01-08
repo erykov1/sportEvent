@@ -54,6 +54,8 @@ Należy dodać i uruchomić zadanie maven-owe z następujący zmiennymi:
  - rsa.public-key=classpath:certs/public.pem (klucz publiczny HS256)
  - spring.liquibase.change-log=classpath:/db/changelog/changelog.xml
 
+Aby backend działał poprawnie należy utworzyć folder 'certs' w 'resources', następnie dodać klucz prywatny HS256 oraz klucz publiczny HS256
+
 Aby uruchomić frontend (https://github.com/erykov1/sport-event-frontend) należy przejść do folderu z projektem i wpisać komendę 'npm run start'
 
 ## Uruchomienie testów jednostkowych
