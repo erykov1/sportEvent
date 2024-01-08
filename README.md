@@ -92,4 +92,7 @@ należy przejść do pakietu test, nacisnąć na niego prawym przyciskiem myszy 
 - PostgreSQL,
 - React,
 - CSS,
-- Bootstrap
+- Bootstrap,
+- Docker,
+- Swagger.io,
+- Liquibase
