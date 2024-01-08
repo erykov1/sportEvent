@@ -23,8 +23,37 @@ Zarządzanie Harmonogramem: Aplikacja umożliwia tworzenie i zarządzanie
 harmonogramem wydarzenia, dzięki czemu uczestnicy mają dostęp do
 informacji na temat danego wydarzenia.
 
+- Strona główna
+![image](https://github.com/erykov1/sportEvent/assets/62502523/ab9375c4-1b34-4ce2-b074-03eba07c0753)
+
+- Strona rejestracji (analogicznie wygląda strona logowania)
+![image](https://github.com/erykov1/sportEvent/assets/62502523/2d063fa2-8a0b-4771-9a04-736c2c8bfe6b)
+
+- Strona wyboru kategorii sportowej
+![image](https://github.com/erykov1/sportEvent/assets/62502523/ae5a1fd9-e3f5-4102-92d3-878be5065aed)
+
+- Strona wyboru wydarzenia sportowego z danej kategorii
+![image](https://github.com/erykov1/sportEvent/assets/62502523/2e3e5afb-67a0-4f9a-b8af-ece1cc5b1533)
+
+- Strona szczegółów wydarzenia
+![image](https://github.com/erykov1/sportEvent/assets/62502523/c6fde170-892c-455e-a43b-c8405e73526a)
+
+- Strona zgłoszeń ('Przeglądaj zgłoszenia' widzi tylko administrator)
+  ![image](https://github.com/erykov1/sportEvent/assets/62502523/0679a5ce-5af1-4094-a06a-886d20a9a1d9)
+
+- Strona przeglądania zgłoszeń
+![image](https://github.com/erykov1/sportEvent/assets/62502523/0a7f1d21-1af6-4bc7-86c9-4e440124faff)
+
+- Strona tworzenia wydarzenia (część 1 dodanie adresu wydarzenia)
+![image](https://github.com/erykov1/sportEvent/assets/62502523/dcdf87ef-15b9-412b-aad2-ca8ca0b9c245)
+
+- Strona tworzenia wydarzenia (część 2 dodanie danych do wydarzenia)
+![image](https://github.com/erykov1/sportEvent/assets/62502523/92635312-092d-4d36-89e0-cfda06dd7321)
+
+
+
 ## Uruchomienie projektu
-Należy dodać zadanie maven-owe z następujący zmiennymi:
+Należy dodać i uruchomić zadanie maven-owe z następujący zmiennymi:
  - spring.datasource.password=<hasło>
  - spring.datasource.url=jdbc:postgresql://localhost:5432/<nazwa_bazy>
  - spring.datasource.username=<nazwa_użytkownika>
@@ -34,8 +63,10 @@ Należy dodać zadanie maven-owe z następujący zmiennymi:
  - rsa.public-key=classpath:certs/public.pem (klucz publiczny HS256)
  - spring.liquibase.change-log=classpath:/db/changelog/changelog.xml
 
+Aby uruchomić frontend (https://github.com/erykov1/sport-event-frontend) należy przejść do folderu z projektem i wpisać komendę 'npm run start'
+
 ## Uruchomienie testów jednostkowych
-należy przejść do pakietu test, nacisnąć na niego prawym przyciskiem myszy i kliknąć opcję: "Run 'Tests' in 'groovy'"
+należy przejść do pakietu test, nacisnąć na niego prawym przyciskiem myszy i kliknąć opcję: "Run 'Tests' in 'groovy'" oraz mieć uruchomione narzędzie Docker
 
 ## Scenariusze testowe dla testera manualnego
 | Test Case ID | Opis           | Kroki Testowe | Oczekiwany Wynik |
